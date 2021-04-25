@@ -13,11 +13,10 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-// TODO: Sound
-//extern	CSoundManager*          g_pSoundManager;
-//extern	IDirectMusicAudioPath*  g_p3DAudiopath;
-//extern	CSoundSegment*			g_pSound[MAX_SOUND];
-//extern	CMusicSegment*			g_pMusic[MAX_MUSIC];
+extern	CMusicManager*          g_pMusicManager;
+extern	IDirectMusicAudioPath*  g_p3DAudiopath;
+extern	CMusicSegment*			g_pSound[MAX_SOUND];
+extern	CMusicSegment*			g_pMusic[MAX_MUSIC];
 
 #define BLOCK_WIDTH	24
 #define BLOCK_TYPE	8
@@ -78,9 +77,9 @@ CTetris_Game::CTetris_Game()
 	m_Texture_Changewhite = NULL;
 	m_Texture_Explode = NULL;
 	m_Texture_Crash = NULL;
-	// TODO: Sound
-	//for(i=0;i<MAX_SOUND;i++)		g_pSound[i]	= NULL;
-	//for(i=0;i<MAX_MUSIC;i++)		g_pMusic[i]	= NULL;
+
+	for(i=0;i<MAX_SOUND;i++)		g_pSound[i]	= NULL;
+	for(i=0;i<MAX_MUSIC;i++)		g_pMusic[i]	= NULL;
 
 	//m_bUseDepthBuffer           = TRUE;
 	CTetrisControl::InitBasicShapes();
@@ -196,10 +195,10 @@ HRESULT CTetris_Game::Create(CWnd *wnd)
 	m_pd3dDevice = DXUTGetD3D9Device();
 	InitDeviceObjects();
 	RestoreDeviceObjects();
-	// 	   TODO: Music
-	//InitDirectMusic(AfxGetMainWnd()->m_hWnd);
-	//if(g_p3DAudiopath)
-	//	g_p3DAudiopath->SetVolume(m_volumn, 0);
+
+	InitDirectMusic(AfxGetMainWnd()->m_hWnd);
+	if(g_p3DAudiopath)
+		g_p3DAudiopath->SetVolume(m_volumn, 0);
 	StopGame();
 	return S_OK;
 }
@@ -216,9 +215,9 @@ void CTetris_Game::SetParam(BOOL smoothdown, BOOL smoothrotate, BOOL leftwindow,
 	m_shownext = shownext;
 	m_othereffect=othereffect;
 	m_volumn = (volumn-100)*20;	//-9600~~0
-	// TODO: Sound
-	//if(g_p3DAudiopath)
-	//	g_p3DAudiopath->SetVolume(m_volumn, 0);
+
+	if(g_p3DAudiopath)
+		g_p3DAudiopath->SetVolume(m_volumn, 0);
 }
 
 HRESULT CTetris_Game::Display()
@@ -577,27 +576,25 @@ void CTetris_Game::PauseGame()
 
 void CTetris_Game::PlayTetrisSound(int player, int nsound)
 {
-	// TODO: Sound
-	//if(m_bPlaySound&&nsound<MAX_SOUND&&g_pSound[nsound])
-	//	g_pSound[nsound]->Play( DMUS_SEGF_DEFAULT | DMUS_SEGF_SECONDARY, g_p3DAudiopath );
+	if(m_bPlaySound&&nsound<MAX_SOUND&&g_pSound[nsound])
+		g_pSound[nsound]->Play( DMUS_SEGF_DEFAULT | DMUS_SEGF_SECONDARY, g_p3DAudiopath );
 }
 
 void CTetris_Game::PlayTetrisMusic(int nmusic)
 {
-//	StopTetrisMusic();
-	// TODO: Sound
-	//if(m_bPlayMusic&&nmusic<MAX_MUSIC&&g_pMusic[nmusic])
-	//{
-	//	g_pMusic[nmusic]->Play( DMUS_SEGF_DEFAULT, g_p3DAudiopath );
-	//}
+	StopTetrisMusic();
+
+	if(m_bPlayMusic&&nmusic<MAX_MUSIC&&g_pMusic[nmusic])
+	{
+		g_pMusic[nmusic]->Play( DMUS_SEGF_DEFAULT, g_p3DAudiopath );
+	}
 }
 
 void CTetris_Game::StopTetrisMusic()
 {
-	// TODO: Sound
-	//for(int i=0;i<MAX_MUSIC;i++)
-	//	if(g_pMusic[i]&&g_pMusic[i]->IsPlaying())
-	//		g_pMusic[i]->Stop();
+	for(int i=0;i<MAX_MUSIC;i++)
+		if(g_pMusic[i]&&g_pMusic[i]->IsPlaying())
+			g_pMusic[i]->Stop();
 
 }
 
@@ -822,9 +819,9 @@ void CTetris_Game::AddSubtitle(int player, int sub, int subtime)
 void CTetris_Game::SetMusicOn(BOOL bOn)	
 {
 	m_bPlayMusic = bOn;
-	// TODO: 
-	//if(m_hWnd==0)
-	//	return;
+
+	if(g_pMusicManager == NULL)
+		return;
 	if(m_bPlayMusic)
 	{
 		if(m_bWindowRendering[0]||m_bWindowRendering[1])

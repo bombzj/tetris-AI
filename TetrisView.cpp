@@ -17,8 +17,8 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // CTetrisView
-//extern	CMusicSegment*			g_pSound[MAX_SOUND];
-//extern	CMusicSegment*			g_pMusic[MAX_MUSIC];
+extern	CMusicSegment*			g_pSound[MAX_SOUND];
+extern	CMusicSegment*			g_pMusic[MAX_MUSIC];
 
 IMPLEMENT_DYNCREATE(CTetrisView, CFormView)
 
@@ -88,10 +88,7 @@ void CTetrisView::DoDataExchange(CDataExchange* pDX)
 
 BOOL CTetrisView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
-	cs.cx = 800;
-	cs.cy = 600;
 	return CFormView::PreCreateWindow(cs);
 }
 
@@ -291,16 +288,15 @@ void CTetrisView::OnGamePlaymusic()
 {	tetris_game.SetMusicOn(!tetris_game.IsMusicOn());
 }
 void CTetrisView::OnUpdateGamePlaymusic(CCmdUI* pCmdUI) 
-{	// TODO: Music
-	//pCmdUI->SetCheck(tetris_game.IsMusicOn()&&g_pMusic[0]!=NULL);	pCmdUI->Enable(g_pMusic[0]!=NULL);
+{
+	pCmdUI->SetCheck(tetris_game.IsMusicOn()&&g_pMusic[0]!=NULL);	pCmdUI->Enable(g_pMusic[0]!=NULL);
 }
 void CTetrisView::OnGamePlaysound() 
 {	tetris_game.SetSoundOn(!tetris_game.IsSoundOn());
 }
 void CTetrisView::OnUpdateGamePlaysound(CCmdUI* pCmdUI) 
 {
-	// TODO: Sound
-	//pCmdUI->SetCheck(tetris_game.IsSoundOn()&&g_pSound[0]!=NULL);	pCmdUI->Enable(g_pSound[0]!=NULL);
+	pCmdUI->SetCheck(tetris_game.IsSoundOn()&&g_pSound[0]!=NULL);	pCmdUI->Enable(g_pSound[0]!=NULL);
 }
 
 

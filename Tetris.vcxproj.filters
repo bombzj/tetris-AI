@@ -90,6 +90,9 @@
     <ClCompile Include="DXUTenum.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="dmutil.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tetris.rc">
@@ -164,6 +167,12 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="DXUTmisc.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="dmutil.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="dmusici.h">
       <Filter>Other</Filter>
     </ClInclude>
   </ItemGroup>

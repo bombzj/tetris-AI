@@ -134,7 +134,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OutputFile>.\Debug\Tetris.exe</OutputFile>
-      <AdditionalDependencies>dsound.lib;dxguid.lib;winmm.lib;dinput8.lib;dxerr.lib;d3d9.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dsound.lib;dxguid.lib;dxguid2.lib;winmm.lib;dinput8.lib;dxerr.lib;d3d9.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -220,7 +220,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <SubSystem>Windows</SubSystem>
       <OutputFile>.\Release\Tetris.exe</OutputFile>
-      <AdditionalDependencies>dsound.lib;dxguid.lib;winmm.lib;dinput8.lib;dxerr.lib;d3d9.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dsound.lib;dxguid.lib;dxguid2.lib;winmm.lib;dinput8.lib;dxerr.lib;d3d9.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -267,6 +267,7 @@
   <ItemGroup>
     <ClCompile Include="ControlsetDialog.cpp" />
     <ClCompile Include="d3dutil.cpp" />
+    <ClCompile Include="dmutil.cpp" />
     <ClCompile Include="DXUT.cpp" />
     <ClCompile Include="DXUTenum.cpp" />
     <ClCompile Include="dxutil.cpp" />
@@ -302,6 +303,8 @@
     <ClInclude Include="ControlsetDialog.h" />
     <ClInclude Include="d3dres.h" />
     <ClInclude Include="d3dutil.h" />
+    <ClInclude Include="dmusici.h" />
+    <ClInclude Include="dmutil.h" />
     <ClInclude Include="DXUT.h" />
     <ClInclude Include="DXUTenum.h" />
     <ClInclude Include="dxutil.h" />

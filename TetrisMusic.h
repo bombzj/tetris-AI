@@ -1,6 +1,6 @@
 #pragma once
 
-//#include "DMUtil.h"
+#include "DMUtil.h"
 #include "DXUtil.h"
 #include <dxerr.h>
 
