@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{37be24d3-9440-42f2-9060-1954b152397a}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{851fcbdd-1d50-44d8-91e6-cff118e10b0f}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{c9472571-2f0e-40f9-9f6c-5fccfd7b795a}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\Midi">
+      <UniqueIdentifier>{47d6d31b-bcab-4d8b-a0ac-2fbbdc9189a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Wave">
+      <UniqueIdentifier>{1e61d6f2-ea18-49b2-8b81-cf3139be16fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Bmp">
+      <UniqueIdentifier>{8af9f884-28a1-4dd5-8640-84ff72edc73e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other">
+      <UniqueIdentifier>{faa99742-9574-4e91-87da-552f01628b08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Few Edited">
+      <UniqueIdentifier>{e17cc8ae-7802-4b12-99fb-9e218deeb408}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ControlsetDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tetris_AI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tetris_Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrisView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrisControl.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrisDraw.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrisInput.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrisMusic.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="d3dutil.cpp">
+      <Filter>Few Edited</Filter>
+    </ClCompile>
+    <ClCompile Include="dxutil.cpp">
+      <Filter>Few Edited</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Few Edited</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Few Edited</Filter>
+    </ClCompile>
+    <ClCompile Include="Tetris.cpp">
+      <Filter>Few Edited</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrisDoc.cpp">
+      <Filter>Few Edited</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUT.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="SDKsound.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="SDKwavefile.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUTmisc.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="DXUTenum.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Tetris.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ControlsetDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tetris_AI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tetris_Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrisView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapeFile.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrisControl.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrisDraw.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrisInput.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrisMusic.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dres.h">
+      <Filter>Few Edited</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dutil.h">
+      <Filter>Few Edited</Filter>
+    </ClInclude>
+    <ClInclude Include="dxutil.h">
+      <Filter>Few Edited</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Few Edited</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Few Edited</Filter>
+    </ClInclude>
+    <ClInclude Include="Tetris.h">
+      <Filter>Few Edited</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrisDoc.h">
+      <Filter>Few Edited</Filter>
+    </ClInclude>
+    <ClInclude Include="DXUT.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="SDKsound.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="SDKwavefile.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="DXUTenum.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="DXUTmisc.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\Addline.wav">
+      <Filter>Resource Files\Wave</Filter>
+    </Media>
+    <Media Include="res\bottom.wav">
+      <Filter>Resource Files\Wave</Filter>
+    </Media>
+    <Media Include="res\Delline.wav">
+      <Filter>Resource Files\Wave</Filter>
+    </Media>
+    <Media Include="res\gameover.wav">
+      <Filter>Resource Files\Wave</Filter>
+    </Media>
+    <Media Include="res\invalid.wav">
+      <Filter>Resource Files\Wave</Filter>
+    </Media>
+    <Media Include="res\Levelclear.wav">
+      <Filter>Resource Files\Wave</Filter>
+    </Media>
+    <Media Include="res\Levelup.wav">
+      <Filter>Resource Files\Wave</Filter>
+    </Media>
+    <Media Include="res\move.wav">
+      <Filter>Resource Files\Wave</Filter>
+    </Media>
+    <Media Include="res\rotate.wav">
+      <Filter>Resource Files\Wave</Filter>
+    </Media>
+    <Media Include="res\speedup.wav">
+      <Filter>Resource Files\Wave</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Background.BMP">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\Block.tga">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\Changewhite.tga">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\Crash.tga">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\Explode.tga">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\Gameover.bmp">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\GamePause.tga">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\Grayblock.tga">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\Level.tga">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\nfloor.tga">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\Score.tga">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\Subtitle.tga">
+      <Filter>Resource Files\Bmp</Filter>
+    </Image>
+    <Image Include="res\firework.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Tetris.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\TetrisDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="res\level00.MID">
+      <Filter>Resource Files\Midi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\level01.mid">
+      <Filter>Resource Files\Midi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\level02.mid">
+      <Filter>Resource Files\Midi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\level03.mid">
+      <Filter>Resource Files\Midi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\level04.mid">
+      <Filter>Resource Files\Midi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\level05.mid">
+      <Filter>Resource Files\Midi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\level06.mid">
+      <Filter>Resource Files\Midi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\level07.mid">
+      <Filter>Resource Files\Midi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\level08.mid">
+      <Filter>Resource Files\Midi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\level09.mid">
+      <Filter>Resource Files\Midi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\level10.mid">
+      <Filter>Resource Files\Midi</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\Tetris.rc2">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
