@@ -33,7 +33,6 @@ BEGIN_MESSAGE_MAP(CTetrisView, CFormView)
 	ON_UPDATE_COMMAND_UI(ID_PLAYER1, OnUpdatePlayer1)
 	ON_COMMAND(ID_PLAYER2, OnPlayer2)
 	ON_UPDATE_COMMAND_UI(ID_PLAYER2, OnUpdatePlayer2)
-	ON_WM_MOVE()
 	ON_WM_PAINT()
 	ON_WM_KILLFOCUS()
 	ON_UPDATE_COMMAND_UI(ID_GAME_PAUSE, OnUpdateGamePause)
@@ -46,6 +45,8 @@ BEGIN_MESSAGE_MAP(CTetrisView, CFormView)
 	ON_UPDATE_COMMAND_UI(ID_GAME_PLAYSOUND, OnUpdateGamePlaysound)
 	ON_COMMAND(ID_COMPUTER, OnComputer)
 	ON_UPDATE_COMMAND_UI(ID_COMPUTER, OnUpdateComputer)
+	ON_COMMAND(ID_GAME_FULLSCREEN, OnGameFullscreen)
+	ON_COMMAND(ID_FORCEWINDOWMODE, OnForcewindowmode)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -152,7 +153,8 @@ void CTetrisView::WriteSettings()
 	app->WriteProfileInt(_T("Config"), _T("smoothdown"), optiondlg.m_smoothdown);
 	app->WriteProfileInt(_T("Config"), _T("smoothrotate"), optiondlg.m_smoothrotate);
 	app->WriteProfileInt(_T("Config"), _T("leftwindow"), optiondlg.m_leftwindow);
-	app->WriteProfileInt(_T("Config"), _T("ailevel"), optiondlg.m_ailevel);
+	BOOL a = app->WriteProfileInt(_T("Config"), _T("ailevel"), optiondlg.m_ailevel);
+	int aa = app->GetProfileInt(_T("Config"), _T("ailevel"), 111);
 	app->WriteProfileInt(_T("Config"), _T("level"), optiondlg.m_level);
 	app->WriteProfileInt(_T("Config"), _T("difficulty"), optiondlg.m_difficulty);
 	app->WriteProfileInt(_T("Config"), _T("shownext"), optiondlg.m_shownext);
@@ -299,13 +301,6 @@ void CTetrisView::OnUpdateGamePlaysound(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(tetris_game.IsSoundOn()&&g_pSound[0]!=NULL);	pCmdUI->Enable(g_pSound[0]!=NULL);
 }
 
-
-void CTetrisView::OnMove(int x, int y) 
-{
-	CFormView::OnMove(x, y);
-	tetris_game.UpdateRect();
-}
-
 void CTetrisView::OnPaint() 
 {
 	CPaintDC dc(this); // device context for painting
@@ -361,4 +356,16 @@ void CTetrisView::OnTimer(UINT nIDEvent)
 
 	}
 	CFormView::OnTimer(nIDEvent);
+}
+
+
+void CTetrisView::OnGameFullscreen()
+{
+	tetris_game.ForceFullscreenMode();
+}
+
+
+void CTetrisView::OnForcewindowmode()
+{
+	tetris_game.ForceWindowMode();
 }

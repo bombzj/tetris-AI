@@ -85,6 +85,8 @@
 #define ID_PLAYER2                      32778
 #define ID_GAME_PLAYSOUND               32780
 #define ID_GAME_PLAYMUSIC               32781
+#define ID_GAME_FULLSCREEN              32782
+#define ID_FORCEWINDOWMODE              32783
 #define ID_COMPUTER                     32784
 
 // Next default values for new objects

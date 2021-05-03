@@ -79,10 +79,10 @@ public:
 	void SetMusicOn(BOOL bOn);
 	BOOL IsSoundOn()			{	return m_bPlaySound;}
 	void SetSoundOn(BOOL bOn)	{	m_bPlaySound = bOn;	}
-
-private:
 	HRESULT ForceFullscreenMode();
 	HRESULT ForceWindowMode();
+
+private:
 	HRESULT DeleteDeviceObjects();	//release directx resource
 	HRESULT InitDeviceObjects();	//load directx resource
 	HRESULT RestoreDeviceObjects();

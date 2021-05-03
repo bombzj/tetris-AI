@@ -170,11 +170,8 @@ HRESULT CTetris_Game::Create(CWnd *wnd)
 {
 	//HRESULT hr;
 	//m_hWnd=wnd->m_hWnd;
-	//
-	//if(FAILED(hr = CD3DApplication::Create(AfxGetApp()->m_hInstance)))
-	//	return hr;
 
-	/*		Migration steps
+	/*		Migration from dx8sdk steps
 		remove d3dapp.cpp with CD3DApplication and related code lines
 		change SetVertexShader to SetFVF
 		add dxsdk include/lib dirs to project setting and move windows sdk kit to above (prior to dxsdk)
@@ -183,9 +180,11 @@ HRESULT CTetris_Game::Create(CWnd *wnd)
 		LPDIRECT3DTEXTURE8 -> LPDIRECT3DTEXTURE9
 		D3DMATERIAL8 -> D3DMATERIAL9
 		add device creation codes below and force dx9 by (DXUTMT_PRESERVE_INPUT)
+		use dxguid.lib from dxsdk9 (totally different from the one in newest sdk) for directmusic, rename it to dxguid2.lib for link
 	*/
-
+	DXUTInit();
 	DXUTSetWindow(wnd->m_hWnd, wnd->m_hWnd, wnd->m_hWnd, false);
+	
 	/*
 	force d3d9 in DXUT.cpp:
 		DXUTMatchOptions matchOptions;
@@ -831,6 +830,22 @@ void CTetris_Game::SetMusicOn(BOOL bOn)
 	}
 	else
 		StopTetrisMusic();
+}
+
+HRESULT CTetris_Game::ForceFullscreenMode()
+{
+	DXUTDeviceSettings deviceSettings = DXUTGetDeviceSettings();
+	if(deviceSettings.d3d9.pp.Windowed)
+		DXUTToggleFullScreen();
+	return S_OK;
+}
+
+HRESULT CTetris_Game::ForceWindowMode()
+{
+	DXUTDeviceSettings deviceSettings = DXUTGetDeviceSettings();
+	if (!deviceSettings.d3d9.pp.Windowed)
+		DXUTToggleFullScreen();
+	return S_OK;
 }
 
 BOOL CTetris_Game::TestGameOver(int player)

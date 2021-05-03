@@ -24,11 +24,11 @@ CTetris_AI::CTetris_AI()
 {
 	m_AILevel = 3;
 	m_ComputerInterval[10]=0;
-	float tmp = 5.0f;
+	float tmp = 30.0f;
 	for(int i=MAX_AILEVEL-1;i>0;i--)
 	{
 		m_ComputerInterval[i]=int(tmp);
-		tmp*=1.5f;
+		tmp*=1.3f;
 	}
 	m_bIsComputerPlay = false;
 }

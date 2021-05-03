@@ -75,7 +75,6 @@ protected:
 	afx_msg void OnUpdatePlayer1(CCmdUI* pCmdUI);
 	afx_msg void OnPlayer2();			// 选择双人游戏
 	afx_msg void OnUpdatePlayer2(CCmdUI* pCmdUI);
-	afx_msg void OnMove(int x, int y);	// 接受窗口移动消息后更新direct3d bound
 	afx_msg void OnPaint();
 	afx_msg void OnKillFocus(CWnd* pNewWnd);	// 失去焦点后Pause Game
 	afx_msg void OnUpdateGamePause(CCmdUI* pCmdUI);
@@ -90,6 +89,9 @@ protected:
 	afx_msg void OnUpdateComputer(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnGameFullscreen();
+	afx_msg void OnForcewindowmode();
 };
 
 #ifndef _DEBUG  // debug version in TetrisView.cpp

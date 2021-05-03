@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "Tetris.h"
 #include "OptionDialog.h"
-//#include "DMUtil.h"
+#include "DMUtil.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,8 +14,8 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionDialog dialog
-//extern	IDirectMusicAudioPath*  g_p3DAudiopath;
-//extern	CMusicSegment*			g_pSound[5];
+extern	IDirectMusicAudioPath*  g_p3DAudiopath;
+extern	CMusicSegment*			g_pSound[5];
 
 COptionDialog::COptionDialog(CWnd* pParent /*=NULL*/)
 	: CDialog(COptionDialog::IDD, pParent)
@@ -75,10 +75,10 @@ BOOL COptionDialog::OnInitDialog()
 	m_slider_volumn.SetRange(0, 100);
 
 	m_slider_volumn.SetPos(m_edit_volumn);
-	// TODO: Sound
-	//m_slider_volumn.EnableWindow(g_pSound[0]!=NULL);	//如果directmusic创建失败，则无法调节
-	//GetDlgItem(IDC_EDIT_VOLUMN)->EnableWindow(g_pSound[0]!=NULL);
-	//GetDlgItem(IDC_LABEL_VOLUMN)->EnableWindow(g_pSound[0]!=NULL);
+
+	m_slider_volumn.EnableWindow(g_pSound[0]!=NULL);	//如果directmusic创建失败，则无法调节
+	GetDlgItem(IDC_EDIT_VOLUMN)->EnableWindow(g_pSound[0]!=NULL);
+	GetDlgItem(IDC_LABEL_VOLUMN)->EnableWindow(g_pSound[0]!=NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -93,16 +93,16 @@ void COptionDialog::OnCustomdrawSlider1(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	m_edit_volumn=m_slider_volumn.GetPos();
 	UpdateData(FALSE);
-	// TODO: Sound
-	//if(g_p3DAudiopath)
-	//	g_p3DAudiopath->SetVolume((m_edit_volumn-100)*10, 0);
+
+	if(g_p3DAudiopath)
+		g_p3DAudiopath->SetVolume((m_edit_volumn-100)*10, 0);
 
 	*pResult = 0;
 }
 
 void COptionDialog::OnReleasedcaptureSliderVolumn(NMHDR* pNMHDR, LRESULT* pResult) 
-{// TODO: Sound
-	//if(g_pSound[1])
-	//	g_pSound[1]->Play( DMUS_SEGF_DEFAULT | DMUS_SEGF_SECONDARY, g_p3DAudiopath );
+{
+	if(g_pSound[1])
+		g_pSound[1]->Play( DMUS_SEGF_DEFAULT | DMUS_SEGF_SECONDARY, g_p3DAudiopath );
 	*pResult = 0;
 }

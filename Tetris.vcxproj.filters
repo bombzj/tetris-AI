@@ -72,9 +72,6 @@
     <ClCompile Include="Tetris.cpp">
       <Filter>Few Edited</Filter>
     </ClCompile>
-    <ClCompile Include="TetrisDoc.cpp">
-      <Filter>Few Edited</Filter>
-    </ClCompile>
     <ClCompile Include="DXUT.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -92,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="dmutil.cpp">
       <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrisDoc.cpp">
+      <Filter>Few Edited</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,9 +151,6 @@
     <ClInclude Include="Tetris.h">
       <Filter>Few Edited</Filter>
     </ClInclude>
-    <ClInclude Include="TetrisDoc.h">
-      <Filter>Few Edited</Filter>
-    </ClInclude>
     <ClInclude Include="DXUT.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -174,6 +171,9 @@
     </ClInclude>
     <ClInclude Include="dmusici.h">
       <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrisDoc.h">
+      <Filter>Few Edited</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
