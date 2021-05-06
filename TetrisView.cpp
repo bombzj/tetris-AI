@@ -48,6 +48,10 @@ BEGIN_MESSAGE_MAP(CTetrisView, CFormView)
 	ON_COMMAND(ID_GAME_FULLSCREEN, OnGameFullscreen)
 	ON_COMMAND(ID_FORCEWINDOWMODE, OnForcewindowmode)
 	//}}AFX_MSG_MAP
+	ON_COMMAND(ID_MODE_AIVSAI, &CTetrisView::OnModeAivsai)
+	ON_COMMAND(ID_MODE_AIONLY, &CTetrisView::OnModeAionly)
+	ON_UPDATE_COMMAND_UI(ID_MODE_AIONLY, &CTetrisView::OnUpdateModeAionly)
+	ON_UPDATE_COMMAND_UI(ID_MODE_AIVSAI, &CTetrisView::OnUpdateModeAivsai)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -120,7 +124,7 @@ void CTetrisView::ReadSettings()
 		}
 	tetris_game.SetSoundOn(app->GetProfileInt(_T("Config"), _T("playsound"), TRUE));
 	tetris_game.SetMusicOn(app->GetProfileInt(_T("Config"), _T("playmusic"), TRUE));
-	tetris_game.SetPlayerNumber(app->GetProfileInt(_T("Config"), _T("playernumber"), 1));
+	tetris_game.SetMode(app->GetProfileInt(_T("Config"), _T("playernumber"), 1));
 	optiondlg.m_othereffect = app->GetProfileInt(_T("Config"), _T("othereffect"), TRUE);
 	optiondlg.m_smoothdown = app->GetProfileInt(_T("Config"), _T("smoothdown"), TRUE);
 	optiondlg.m_smoothrotate = app->GetProfileInt(_T("Config"), _T("smoothrotate"), TRUE);
@@ -148,7 +152,7 @@ void CTetrisView::WriteSettings()
 		}
 	app->WriteProfileInt(_T("Config"), _T("playsound"), tetris_game.IsSoundOn());
 	app->WriteProfileInt(_T("Config"), _T("playmusic"), tetris_game.IsMusicOn());
-	app->WriteProfileInt(_T("Config"), _T("playernumber"), tetris_game.GetPlayerNumber());
+	app->WriteProfileInt(_T("Config"), _T("playernumber"), tetris_game.GetMode());
 	app->WriteProfileInt(_T("Config"), _T("othereffect"), optiondlg.m_othereffect);
 	app->WriteProfileInt(_T("Config"), _T("smoothdown"), optiondlg.m_smoothdown);
 	app->WriteProfileInt(_T("Config"), _T("smoothrotate"), optiondlg.m_smoothrotate);
@@ -223,12 +227,14 @@ void CTetrisView::OnUpdateGamePause(CCmdUI* pCmdUI)
 
 void CTetrisView::OnGameOption() 
 {
+	this->OnForcewindowmode();
 	if(optiondlg.DoModal()!=IDOK)
 		return;
 	WriteSettings();
 }
 void CTetrisView::OnGameControl() 
 {
+	this->OnForcewindowmode();
 	if(controlsetdlg.DoModal()!=IDOK)
 	{
 		for(int p=0; p<MAX_PLAYER; p++)
@@ -266,26 +272,51 @@ void CTetrisView::ResetInputBuffer()
 }
 
 void CTetrisView::OnPlayer1() 
-{	tetris_game.SetPlayerNumber(1);	
+{	tetris_game.SetMode(1);	
 }
 void CTetrisView::OnPlayer2() 
-{	tetris_game.SetPlayerNumber(2);	
+{	tetris_game.SetMode(2);	
 }
 void CTetrisView::OnComputer() 
-{	tetris_game.SetPlayerNumber(3);	
+{	tetris_game.SetMode(3);	
 }
+void CTetrisView::OnModeAivsai()
+{
+	tetris_game.SetMode(5);
+}
+void CTetrisView::OnModeAionly()
+{
+	tetris_game.SetMode(4);
+}
+
 void CTetrisView::OnUpdatePlayer1(CCmdUI* pCmdUI) 
-{	pCmdUI->SetCheck(tetris_game.GetPlayerNumber()==1);
+{	
+	pCmdUI->SetCheck(tetris_game.GetMode()==1);
 	pCmdUI->Enable(!tetris_game.IsPlaying());
 }
 void CTetrisView::OnUpdatePlayer2(CCmdUI* pCmdUI) 
-{	pCmdUI->SetCheck(tetris_game.GetPlayerNumber()==2);
+{	
+	pCmdUI->SetCheck(tetris_game.GetMode()==2);
 	pCmdUI->Enable(!tetris_game.IsPlaying());
 }
 void CTetrisView::OnUpdateComputer(CCmdUI* pCmdUI) 
-{	pCmdUI->SetCheck(tetris_game.GetPlayerNumber()==3);
+{	
+	pCmdUI->SetCheck(tetris_game.GetMode()==3);
 	pCmdUI->Enable(!tetris_game.IsPlaying());
 }
+
+void CTetrisView::OnUpdateModeAionly(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(tetris_game.GetMode() == 4);
+	pCmdUI->Enable(!tetris_game.IsPlaying());
+}
+
+void CTetrisView::OnUpdateModeAivsai(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(tetris_game.GetMode() == 5);
+	pCmdUI->Enable(!tetris_game.IsPlaying());
+}
+
 void CTetrisView::OnGamePlaymusic() 
 {	tetris_game.SetMusicOn(!tetris_game.IsMusicOn());
 }
@@ -319,7 +350,6 @@ void CTetrisView::OnTimer(UINT nIDEvent)
 {
 	if(nIDEvent==ID_GAME_TIMER)	
 	{
-
 		DWORD curTime=timeGetTime();
 		if(tetris_game.IsPaused())
 			return;
@@ -369,3 +399,4 @@ void CTetrisView::OnForcewindowmode()
 {
 	tetris_game.ForceWindowMode();
 }
+

@@ -153,6 +153,9 @@ void CTetrisControl::Start(int nSeed)
 		m_nCramedFloors[i] = -1;
 
 	CreateShape(FALSE);
+	while (m_nCurShapeType > 2 && m_nCurShapeType != 5) {
+		CreateShape(FALSE);
+	}
 	CreateShape();
 }
 

@@ -166,6 +166,32 @@ CTetris_Game::~CTetris_Game()
 {
 }
 
+HRESULT CALLBACK OnCreateDevice(IDirect3DDevice9* pd3dDevice, const D3DSURFACE_DESC* pBackBufferSurfaceDesc,
+	void* pUserContext)
+{
+	CTetris_Game* tg = (CTetris_Game*)pUserContext;
+	//tg->m_pd3dDevice = pd3dDevice;
+	//tg->InitDeviceObjects();
+	//tg->RestoreDeviceObjects();
+	return S_OK;
+}
+HRESULT CALLBACK OnResetDevice(IDirect3DDevice9* pd3dDevice,
+	const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext)
+{
+	CTetris_Game* tg = (CTetris_Game*)pUserContext;
+	tg->m_pd3dDevice = pd3dDevice;
+	tg->InitDeviceObjects();
+	tg->RestoreDeviceObjects();
+	return S_OK;
+}
+void CALLBACK OnDestroyDevice(void* pUserContext)
+{
+}
+void CALLBACK OnLostDevice(void* pUserContext)
+{
+	CTetris_Game* tg = (CTetris_Game*)pUserContext;
+	tg->DeleteDeviceObjects();
+}
 HRESULT CTetris_Game::Create(CWnd *wnd)
 {
 	//HRESULT hr;
@@ -179,21 +205,17 @@ HRESULT CTetris_Game::Create(CWnd *wnd)
 		change ZI to Zi in c++/general/debug information format
 		LPDIRECT3DTEXTURE8 -> LPDIRECT3DTEXTURE9
 		D3DMATERIAL8 -> D3DMATERIAL9
-		add device creation codes below and force dx9 by (DXUTMT_PRESERVE_INPUT)
+		add device creation codes below
 		use dxguid.lib from dxsdk9 (totally different from the one in newest sdk) for directmusic, rename it to dxguid2.lib for link
 	*/
+	DXUTSetCallbackD3D9DeviceCreated(OnCreateDevice, this);		// side effect: force d3d9
+	DXUTSetCallbackD3D9DeviceLost(OnLostDevice, this);
+	DXUTSetCallbackD3D9DeviceDestroyed(OnDestroyDevice, this);
+	DXUTSetCallbackD3D9DeviceReset(OnResetDevice, this);
 	DXUTInit();
 	DXUTSetWindow(wnd->m_hWnd, wnd->m_hWnd, wnd->m_hWnd, false);
-	
-	/*
-	force d3d9 in DXUT.cpp:
-		DXUTMatchOptions matchOptions;
-		matchOptions.eAPIVersion = DXUTMT_PRESERVE_INPUT;// DXUTMT_IGNORE_INPUT;
-	*/
+
 	DXUTCreateDevice();
-	m_pd3dDevice = DXUTGetD3D9Device();
-	InitDeviceObjects();
-	RestoreDeviceObjects();
 
 	InitDirectMusic(AfxGetMainWnd()->m_hWnd);
 	if(g_p3DAudiopath)
@@ -515,7 +537,7 @@ void CTetris_Game::NewGame()
 	int seed=rand(), i, p;
 	for(i=0;i<MAX_PLAYER;i++)
 		m_bWindowRendering[i] = TRUE;
-	switch(playernumber)
+	switch(m_Mode)
 	{
 	case 1:
 		if(m_leftwindow)
@@ -538,6 +560,14 @@ void CTetris_Game::NewGame()
 			TetrisEngine[0].SetComputerPlay(true, m_AILevel);
 			TetrisEngine[1].SetComputerPlay(false);
 		}
+		break;
+	case 4:
+		TetrisEngine[0].SetComputerPlay(true, m_AILevel);
+		m_bWindowRendering[1] = FALSE;
+		break;
+	case 5:
+		TetrisEngine[0].SetComputerPlay(true, m_AILevel);
+		TetrisEngine[1].SetComputerPlay(true, m_AILevel);
 		break;
 	}
 
@@ -700,7 +730,7 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 		}
 
 		/*****判断分数是否够升级*******/
-		EACH_PLAYER(p) if(playernumber==1&&TetrisEngine[p].GetCurScore()/LEVELUP_SCORE+m_Level>m_curLevel)
+		EACH_PLAYER(p) if((m_Mode==1|| m_Mode == 4) &&TetrisEngine[p].GetCurScore()/LEVELUP_SCORE+m_Level>m_curLevel)
 		{
 			if(m_curLevel<MAX_LEVEL)//升级
 			{
@@ -855,7 +885,7 @@ BOOL CTetris_Game::TestGameOver(int player)
 		PlayTetrisSound(player, SOUND_GAMEOVER);
 		PlayTetrisMusic(MUSIC_LEVEL00);
 		m_GameOver_Counter[player] = 0;
-		if(playernumber>1)
+		if(m_Mode>1 && m_Mode != 4)
 		{
 			if(TetrisEngine[1-player].IsGameOver()&&m_AddFloor[1-player]==EFFECT_NOT_START)
 				AddSubtitle(player, Subtitle_Draw, 3*SUBTITLE_TIME2);

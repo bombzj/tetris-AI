@@ -61,8 +61,8 @@ public:
 	void PauseGame();
 	CTetris_Game();
 	~CTetris_Game();
-	int GetPlayerNumber()		{	return playernumber;}
-	int SetPlayerNumber(int n)	{	return playernumber=n;}
+	int GetMode()		{	return m_Mode;}
+	int SetMode(int n)	{	return m_Mode=n;}
 	BOOL IsPaused()				{	return m_bIsPaused;}
 	void TogglePause()			{	m_bIsPaused=!m_bIsPaused;	if(m_bIsPaused)	PauseGame();}
 	BOOL IsPlaying()			{	return m_bIsPlaying;}
@@ -81,11 +81,12 @@ public:
 	void SetSoundOn(BOOL bOn)	{	m_bPlaySound = bOn;	}
 	HRESULT ForceFullscreenMode();
 	HRESULT ForceWindowMode();
-
-private:
+	IDirect3DDevice9* m_pd3dDevice = NULL;
 	HRESULT DeleteDeviceObjects();	//release directx resource
 	HRESULT InitDeviceObjects();	//load directx resource
 	HRESULT RestoreDeviceObjects();
+
+private:
 	void ChangeDevice();
 	HRESULT Render();	//render
 	BOOL TestGameOver(int player);	//检测引擎，游戏是否结束
@@ -116,7 +117,7 @@ private:
 	int  m_AddFloor[MAX_PLAYER];//>0表示正进行加行动画
 	int  m_nAddFloorBuffer[MAX_PLAYER];	//给对方增加的行数量
 	int  m_nAddingFloor[MAX_PLAYER];	//正在增加的行的数量
-	int playernumber;					//player数量 （1或者2）
+	int m_Mode;					// 1: 1player, 2: 2player, 3: vs AI, 4: AI only, 5: AI vs AI
 	int m_curLevel;		//当前级别（下落速度）
 	int m_Level;		//处世级别
 	int m_AILevel;		//AI级别（速度）
@@ -158,7 +159,6 @@ private:
 	LPDIRECT3DTEXTURE9 m_Texture_Explode;
 	LPDIRECT3DTEXTURE9 m_Texture_Crash;
 
-	IDirect3DDevice9* m_pd3dDevice = NULL;
 	D3DMATERIAL9 mtrl;
 	//texture tile position
 	RECT3D ChangewhiteRect[BLOCK_TYPE][CHANGEWHITE_FRAME];

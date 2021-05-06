@@ -1891,7 +1891,7 @@ HRESULT WINAPI DXUTCreateDevice( bool bWindowed, int nSuggestedWidth, int nSugge
     }
 
     DXUTMatchOptions matchOptions;
-    matchOptions.eAPIVersion = DXUTMT_PRESERVE_INPUT;// DXUTMT_IGNORE_INPUT;
+    matchOptions.eAPIVersion = DXUTMT_IGNORE_INPUT;
     matchOptions.eAdapterOrdinal = DXUTMT_IGNORE_INPUT;
     matchOptions.eDeviceType = DXUTMT_IGNORE_INPUT;
     matchOptions.eOutput = DXUTMT_IGNORE_INPUT;

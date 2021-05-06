@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Tetris.h"
 #include "Tetris_Game.h"
+#include <iostream>
 
 HRESULT CTetris_Game::InitDeviceObjects()
 {
@@ -105,7 +106,7 @@ HRESULT CTetris_Game::DeleteDeviceObjects()
 	SAFE_RELEASE(m_Texture_Changewhite);
 	SAFE_RELEASE(m_Texture_Crash);
  	SAFE_RELEASE(m_Texture_Explode);
-   return S_OK;
+	return S_OK;
 }
 
 void CTetris_Game::Blt3D( DWORD x, DWORD y, LPDIRECT3DTEXTURE9 pTexture, RECT3D* prc)
@@ -137,10 +138,28 @@ void CTetris_Game::Blt3D(DWORD x, DWORD y, LPDIRECT3DTEXTURE9 pTexture, int widt
 
 HRESULT CTetris_Game::Render()
 {
-//	m_pd3dDevice->Clear( 0L, NULL, D3DCLEAR_TARGET, 0x000000ff, 1.0f, 0L );
+	m_pd3dDevice->Clear( 0L, NULL, D3DCLEAR_TARGET, 0x00000000, 1.0f, 0L );
 	
     //if( FAILED( m_pd3dDevice->TestCooperativeLevel() ) )
     //    ForceWindowed();
+	float width = DXUTGetWindowWidth();
+	float height = DXUTGetWindowHeight();
+
+	float ratio = (float)BG_HEIGHT / BG_WIDTH;
+	float ratio2 = height / width;
+	if (ratio2 > ratio)
+	{
+		width = BG_WIDTH;
+		height = BG_WIDTH * ratio2;
+	}
+	else
+	{
+		width = BG_HEIGHT / ratio2;
+		height = BG_HEIGHT;
+	}
+	D3DXMATRIX matOrtho, matworld;
+	D3DXMatrixOrthoLH(&matOrtho, (float)width, (float)height, 0.0f, 1.0f);
+	m_pd3dDevice->SetTransform(D3DTS_PROJECTION, &matOrtho);
 
 	// Begin the scene
 	if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
@@ -161,13 +180,34 @@ HRESULT CTetris_Game::Render()
 //		Blt3D(0, 0, m_Texture_GrayBlock, BG_WIDTH, BG_HEIGHT);
 		m_pd3dDevice->EndScene();// End the scene.
 	}
+	//RECT rect = DXUTGetWindowClientRect();
+	//if (!DXUTIsWindowed())
+	//{
+	//	//D3DVIEWPORT9 vp;
+	//	//m_pd3dDevice->GetViewport(&vp);
+	//	//rect.right = vp.Width;
+	//	//rect.bottom = vp.Height;
+	//}
+	//float ratio = (float)BG_HEIGHT / BG_WIDTH;
+	//if ((float)rect.bottom / rect.right > ratio)
+	//{
+	//	int cliph = (rect.bottom - (int)(rect.right * ratio)) / 2;
+	//	rect.top += cliph;
+	//	rect.bottom -= cliph;
+	//}
+	//else
+	//{
+	//	int clipw = (rect.right - (int)(rect.bottom / ratio)) / 2;
+	//	rect.left += clipw;
+	//	rect.right -= clipw;
+	//}
+
 	m_pd3dDevice->Present( NULL, NULL, NULL, NULL );
 	return S_OK;
 }
 
 void CTetris_Game::Destroy()
 {
-	DeleteDeviceObjects();
 	DXUTShutdown();
 	//Cleanup3DEnvironment();
 }

@@ -92,6 +92,10 @@ protected:
 public:
 	afx_msg void OnGameFullscreen();
 	afx_msg void OnForcewindowmode();
+	afx_msg void OnModeAivsai();
+	afx_msg void OnModeAionly();
+	afx_msg void OnUpdateModeAionly(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModeAivsai(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // debug version in TetrisView.cpp
