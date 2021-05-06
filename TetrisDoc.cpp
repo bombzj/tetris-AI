@@ -29,8 +29,6 @@ END_MESSAGE_MAP()
 
 CTetrisDoc::CTetrisDoc()
 {
-	// TODO: add one-time construction code here
-
 }
 
 CTetrisDoc::~CTetrisDoc()
@@ -41,9 +39,6 @@ BOOL CTetrisDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
-
-	// TODO: add reinitialization code here
-	// (SDI documents will reuse this document)
 
 	return TRUE;
 }
@@ -57,11 +52,9 @@ void CTetrisDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
-		// TODO: add storing code here
 	}
 	else
 	{
-		// TODO: add loading code here
 	}
 }
 

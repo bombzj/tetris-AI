@@ -46,7 +46,7 @@ public:
 
 public:
 	void Start(int nSeed);	//游戏开始后开始AI计算
-	void SetComputerPlay(bool computerplay, int level = 3);	//设置是否由AI控制以及AI级别
+	void SetComputerPlay(bool computerplay, int level = 3, int alg = 0);	//设置是否由AI控制以及AI级别
 	bool m_bIsComputerPlay;	//是否由电脑AI控制
 
 private:
@@ -71,8 +71,9 @@ private:
 	int CalcDeletedFloor();
 
 private:
-	int DeleteFullFloor(CBlockData& blockdata);		//消行
-	int m_AILevel;	//电脑级别
+	int DeleteFullFloor(CBlockData& blockdata);
+	int m_AILevel;
+	int m_Alg;		// different AI algorithms
 	int m_ComputerInterval[MAX_AILEVEL+1];//1/40秒为单位
 	int m_nActionFailed;	//如果为0则失败
 	int m_nWaitTodown;	//到时间后按下键

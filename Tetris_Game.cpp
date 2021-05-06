@@ -562,12 +562,12 @@ void CTetris_Game::NewGame()
 		}
 		break;
 	case 4:
-		TetrisEngine[0].SetComputerPlay(true, m_AILevel);
+		TetrisEngine[0].SetComputerPlay(true, m_AILevel, 1);
 		m_bWindowRendering[1] = FALSE;
 		break;
 	case 5:
 		TetrisEngine[0].SetComputerPlay(true, m_AILevel);
-		TetrisEngine[1].SetComputerPlay(true, m_AILevel);
+		TetrisEngine[1].SetComputerPlay(true, m_AILevel, 1);
 		break;
 	}
 

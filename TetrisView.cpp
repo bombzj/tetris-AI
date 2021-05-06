@@ -106,7 +106,7 @@ void CTetrisView::OnInitialUpdate()
 
 	srand(time(NULL));
 
-	tetris_game.Create(this);
+	tetris_game.Create(AfxGetApp()->GetMainWnd());
 	SetTimer(ID_GAME_TIMER, 1, NULL);
 }
 

@@ -71,14 +71,18 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame message handlers
+bool closed = false;
 
 void CMainFrame::OnClose() 
 {
-	if(MessageBox(L"Quit£¿", NULL, MB_OKCANCEL)==IDOK)
+	if (!closed && MessageBox(L"Quit£¿", NULL, MB_OKCANCEL) == IDOK)
+	{
+		closed = true;
 		CFrameWnd::OnClose();
+	}
 }
 
 void CMainFrame::OnUpdateFrameTitle(BOOL bAddToTitle)
 {
-	SetWindowText(L"Tetris");
+	SetWindowText(L"Tetris-AI");
 }

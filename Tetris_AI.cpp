@@ -230,6 +230,8 @@ float CTetris_AI::CalcValue(const CBlockData& blockdata)
 	float para6=CalcHoleLevel(blockdata);
 	int para7=CalcSurfaceLevel();
 	int para8=CalcNewHole(blockdata);
+	if(m_Alg == 1)
+		return para0 * 1 + 5 * para1 + 9 * para2 + 3.6f * para3 + 3 * para4/* + para5*/ + para6 / 10 + (float)para7 / 50 + para8;
 	return para0 * 10 + 5 * para1 + 9 * para2 + 3.6f * para3 + 3 * para4/* + para5*/ + para6 / 10 + (float)para7 / 50 + para8;
 }
 
@@ -348,10 +350,11 @@ ComputerMove CTetris_AI::ComputerPlay()
 
 }
 
-void CTetris_AI::SetComputerPlay(bool computerplay, int level)
+void CTetris_AI::SetComputerPlay(bool computerplay, int level, int alg)
 {
 	m_AILevel = level;
 	m_bIsComputerPlay=computerplay;
+	m_Alg = alg;
 }
 
 int CTetris_AI::CalcDeletedFloor()
