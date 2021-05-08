@@ -133,7 +133,7 @@ CTetris_Game::CTetris_Game()
 	SetallOffset(ExplodeCenterOffset+EXPLODE_DIRECTION*1, 24, 24);
 	SetallOffset(ExplodeCenterOffset+EXPLODE_DIRECTION*2, 30, 24);
 	SetallOffset(ExplodeCenterOffset+EXPLODE_DIRECTION*3, 36, 24);
-	//不同颜色块的爆炸颜色
+	// explosion of different colors
 	BlockColor[0].r=255;	BlockColor[0].g=0;		BlockColor[0].b=0;
 	BlockColor[1].r=250;	BlockColor[1].g=187;	BlockColor[1].b=0;
 	BlockColor[2].r=255;	BlockColor[2].g=35;		BlockColor[2].b=200;
@@ -235,7 +235,7 @@ void CTetris_Game::SetParam(BOOL smoothdown, BOOL smoothrotate, BOOL leftwindow,
 	m_difficulty = difficulty;
 	m_shownext = shownext;
 	m_othereffect=othereffect;
-	m_volumn = (volumn-100)*20;	//-9600~~0
+	m_volumn = (volumn-100)*20;	// -9600~~0
 
 	if(g_p3DAudiopath)
 		g_p3DAudiopath->SetVolume(m_volumn, 0);
@@ -245,7 +245,7 @@ HRESULT CTetris_Game::Display()
 {
 	int p, i, j;
 
-/*******绘制整个区域*******/
+/******* Draw the whole area *******/
 	Blt3D(0, 0, m_Texture_Background, BG_WIDTH, BG_HEIGHT);
 	for(p=0;p<MAX_PLAYER;p++)	if(m_bWindowRendering[p])
 	{
@@ -253,7 +253,7 @@ HRESULT CTetris_Game::Display()
 		CShape &tmp2=TetrisEngine[p].GetNextShape();
 		if(TetrisEngine[p].IsGameOver()&&m_AddFloor[p]==EFFECT_NOT_START)
 		{
-			/***********绘制GameOver游戏区域**********/
+			/*********** Draw GameOver area**********/
 			for(i=0;i<HORIZONTAL_BLOCKS_NUMBER;i++)//
 				for(j=0;j<VERTICAL_BLOCKS_NUMBER;j++)
 					if(TetrisEngine[p].GetBlock(i, j).m_nStatus==HAVE_BLOCK)
@@ -271,10 +271,10 @@ HRESULT CTetris_Game::Display()
 		{
 			CShape &tmp=TetrisEngine[p].GetCurShape();
 			CShape &tmp2=TetrisEngine[p].GetNextShape();
-			/***********绘制正在消去（爆炸）的行**********/
+			/*********** Draw deleting rows **********/
 			if(m_Explode[p]!=EFFECT_NOT_START)
 			{
-				byte downfloor[VERTICAL_BLOCKS_NUMBER]={0};//计算需要下降的层数
+				byte downfloor[VERTICAL_BLOCKS_NUMBER]={0};	// how many rows to delete/drop
 				for(i=0;i<4;i++)
 					if(TetrisEngine[p].GetCramedFloor(i)!=-1)
 						for(j=0;j<TetrisEngine[p].GetCramedFloor(i);j++)
@@ -288,7 +288,7 @@ HRESULT CTetris_Game::Display()
 							{
 								int downpixel=0;
 								int downline=m_Explode[p]-DELLINE_DOWN_TIME;
-								if(downline>0)//其他层开始往下掉
+								if(downline>0)	// other layers fall
 								{
 									if(downline/DELLINE_DOWN_FRAME>=downfloor[j])
 										downpixel=downfloor[j]*BLOCK_WIDTH;
@@ -328,7 +328,7 @@ HRESULT CTetris_Game::Display()
 				}
 
 			}
-			/***********绘制正在增长的行**********/
+			/*********** Draw adding lines **********/
 			else if (m_AddFloor[p]!=EFFECT_NOT_START)
 			{
 				m_GameOver_Counter[p] = 0;
@@ -355,7 +355,7 @@ HRESULT CTetris_Game::Display()
 			}
 			else
 			{
-				/***********绘制游戏区域**********/
+				/*********** Draw game area **********/
 				for(i=0;i<HORIZONTAL_BLOCKS_NUMBER;i++)//
 					for(j=0;j<VERTICAL_BLOCKS_NUMBER;j++)
 						if(TetrisEngine[p].GetBlock(i, j).m_nStatus==HAVE_BLOCK)
@@ -363,16 +363,16 @@ HRESULT CTetris_Game::Display()
 						Blt3D( PlayerRect[p].x+i*BLOCK_WIDTH, PlayerRect[p].y+j*BLOCK_WIDTH, 
 							m_Texture_Block, BlockRect[TetrisEngine[p].GetBlock(i, j).m_nColor]+AnimeFrame/BLOCK_CPF%BLOCK_FRAME);
 					}
-				/***********绘制正在下落的块**********/
+				/*********** Draw falling shapes **********/
 				for(i=0;i<tmp.m_bBlocks;i++)//
 				{
-					float top, left;//center的坐标
-					float rotatedtop, rotatedleft;//计算旋转后的坐标
-					float rleft= tmp.m_ptBlocks[i].x-BaseShapeCenter[tmp.m_nColor].x, //rtop为相对center的坐标
+					float top, left;	// center coord
+					float rotatedtop, rotatedleft;	// rotated coord
+					float rleft= tmp.m_ptBlocks[i].x-BaseShapeCenter[tmp.m_nColor].x, // rtop is the coord of center
 						rtop = tmp.m_ptBlocks[i].y-BaseShapeCenter[tmp.m_nColor].y;
 					if(m_smoothrotate)
 					{
-						float alpha = TetrisEngine[p].GetSmoothRotate() * PI / 2,//alpha为旋转的角度
+						float alpha = TetrisEngine[p].GetSmoothRotate() * PI / 2,	// angle of rotation
 							cosalpha = cosf(alpha), sinalpha = sinf(alpha);
 						rotatedleft = rleft * cosalpha + rtop * sinalpha;
 						rotatedtop = -rleft * sinalpha + rtop * cosalpha;
@@ -406,7 +406,7 @@ HRESULT CTetris_Game::Display()
 				}
 			}
 		}
-		/***********绘制下一个块**********/
+		/*********** Draw next **********/
 		if(m_shownext)
 		{
 			for(i=0;i<tmp2.m_bBlocks;i++)//
@@ -418,7 +418,7 @@ HRESULT CTetris_Game::Display()
 							top + (tmp2.m_ptBlocks[i].y+tmp2.m_ptPos.y) * BLOCK_WIDTH, m_Texture_Block, BlockRect[tmp2.m_nColor]);
 			}
 		}
-		/***********绘制将要增加的层数提示**********/
+		/*********** Draw Bombs of adding lines **********/
 		int nfloor=TetrisEngine[p].GetFloorsBuffer();
 		int floortype=(nfloor-1)/2;
 		if(floortype>=NFLOOR_TYPE)
@@ -426,7 +426,7 @@ HRESULT CTetris_Game::Display()
 		int nbomb=nfloor>10 ? 10 : nfloor;
 		for(i=0;i<nbomb;i++)
 			Blt3D(NFloorRect[p].x+NFLOOR_WIDTH*i, NFloorRect[p].y, m_Texture_NFloor, NFloorTypeRect[floortype]+AnimeFrame/NFLOOR_CPF%NFLOOR_FRAME);
-		/***********绘制得分**********/
+		/*********** Draw scores **********/
 		int score=m_DisplayScore[p];
 		int nspeed=(TetrisEngine[p].GetCurScore()-m_DisplayScore[p])/200;
 		m_DisplayScore[p]+=SCORE_ADD_SPEED*(int)pow(2, nspeed);
@@ -439,7 +439,7 @@ HRESULT CTetris_Game::Display()
 			Blt3D(curPoint.x, curPoint.y, m_Texture_Score, ScoreNumberRect+(score%SCORE_NUMBER));
 			score/=SCORE_NUMBER;
 		}
-		/***********绘制Subtitle**********/
+		/*********** Draw Subtitle **********/
 		for(i=0;i<MAX_SUBTITLE;i++)
 			if(Subtitle[i].subcount>0)
 			{
@@ -482,19 +482,19 @@ int CTetris_Game::PlayerInputNotify(int player, int nkeydef, int defaultrow)
 
 	switch(nkeydef)
 	{
-	case KeyDef_Left://左
+	case KeyDef_Left:
 		if(TetrisEngine[player].OnLeft())
 			PlayTetrisSound(player, SOUND_MOVE);
 		else
 			PlayTetrisSound(player, SOUND_INVALID);
 		break;
-	case KeyDef_Right://右
+	case KeyDef_Right:
 		if(TetrisEngine[player].OnRight())
 			PlayTetrisSound(player, SOUND_MOVE);
 		else
 			PlayTetrisSound(player, SOUND_INVALID);
 		break;
-	case KeyDef_Rotate://旋转
+	case KeyDef_Rotate:
 		if(m_smoothrotate)
 			res = TetrisEngine[player].OnStartSmoothRotate();
 		else
@@ -504,19 +504,19 @@ int CTetris_Game::PlayerInputNotify(int player, int nkeydef, int defaultrow)
 		else
 			PlayTetrisSound(player, SOUND_INVALID);
 		break;
-	case KeyDef_Bottom://底
+	case KeyDef_Bottom:
 		row=TetrisEngine[player].OnDownToBottom();
 		break;
-	case KeyDef_Down://下一层
+	case KeyDef_Down:
 		if(m_smoothdown)
 			row=TetrisEngine[player].OnSmoothDown((float)ANIME_TIME/ACCE_DOWNSPEED);
 		else
 			row=TetrisEngine[player].OnDown();
 		break;
-	case KeyDef_SmoothDown://平滑下一层
+	case KeyDef_SmoothDown:
 		row=TetrisEngine[player].OnSmoothDown((float)ANIME_TIME/TimerInterval[m_curLevel]);
 		break;
-	case KeyDef_SmoothRotate://平滑旋转
+	case KeyDef_SmoothRotate:
 		TetrisEngine[player].OnSmoothRotate((float)ANIME_TIME/ROTATE_TIME);
 		break;
 	default:;
@@ -634,11 +634,11 @@ void CTetris_Game::UpdateRect()
 }
 
 void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD curTime)
-{if(m_bWindowRendering[0]||m_bWindowRendering[1]){//至少有一个窗口需要Render
+{if(m_bWindowRendering[0]||m_bWindowRendering[1]){
 
 	DWORD interval;
 	int p;
-	int row[MAX_PLAYER]={-1, -1};//该状态为平常状态
+	int row[MAX_PLAYER]={-1, -1};	// default status
 	if(m_bIsPlaying)
 	{
 		EACH_PLAYER(p)	if(m_Explode[p]==EFFECT_NOT_START&&m_AddFloor[p]==EFFECT_NOT_START)
@@ -673,7 +673,7 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 						if(j==KeyDef_Down)
 							PlayTetrisSound(p, SOUND_SPEEDUP);
 					}
-					/*****KEYDOWN REPEAT*******/
+					/***** KEYDOWN REPEAT *******/
 					if(keystatus[p][j].bKeydown&&j<2)
 					{
 						interval=curTime-keystatus[p][j].DownTime;
@@ -688,17 +688,17 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 			if(row[p]==-1)
 			{
 				if(m_smoothrotate)
-					PlayerInputNotify(p, KeyDef_SmoothRotate);//系统要求的旋转
+					PlayerInputNotify(p, KeyDef_SmoothRotate);	// AI rotation
 
 				interval=curTime-LastTime_Down[p];
 				if(m_smoothdown)
 				{
 					if(keystatus[p][KeyDef_Down].bKeydown)
 					{
-						row[p]=PlayerInputNotify(p, KeyDef_Down, row[p]);//系统要求的下降
+						row[p]=PlayerInputNotify(p, KeyDef_Down, row[p]);	// AI down move
 					}
 					else
-						row[p]=PlayerInputNotify(p, KeyDef_SmoothDown, row[p]);//系统要求的下降
+						row[p]=PlayerInputNotify(p, KeyDef_SmoothDown, row[p]);	// AI down move
 				}
 				else
 				{
@@ -720,7 +720,7 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 					}
 				}
 			}
-			if(row[p]!=-1)//如果方块放下，键 repeat取消
+			if(row[p]!=-1)	// cancel repeat after one block drop
 			{
 				keystatus[p][0].bKeydown = FALSE;
 				keystatus[p][1].bKeydown = FALSE;
@@ -729,19 +729,19 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 			}
 		}
 
-		/*****判断分数是否够升级*******/
+		/***** test whether is the level cleared *******/
 		EACH_PLAYER(p) if((m_Mode==1|| m_Mode == 4) &&TetrisEngine[p].GetCurScore()/LEVELUP_SCORE+m_Level>m_curLevel)
 		{
-			if(m_curLevel<MAX_LEVEL)//升级
+			if(m_curLevel<MAX_LEVEL)	// level clear
 			{
 				AddSubtitle(p, m_curLevel+Subtitle_Draw);
 				m_curLevel++;
 				PlayTetrisMusic(MUSIC_LEVEL00 + m_curLevel);
 				PlayTetrisSound(p, SOUND_LEVELUP);
 			}
-			else//通关
+			else // level all clear, wait for anim to finish
 			{
-				TetrisEngine[p].CreateNewShape();
+				//TetrisEngine[p].CreateNewShape();
 				AddSubtitle(p, Subtitle_Win, 3*SUBTITLE_TIME2);
 				PlayTetrisSound(p, SOUND_LEVELCLEAR);
 				PlayTetrisMusic(MUSIC_LEVEL00);
@@ -750,12 +750,12 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 				m_bIsPlaying= FALSE;
 			}
 		}
-		/*****判断是否需要开启爆炸或者增长等效果*******/
+		/***** Extra animation *******/
 
-		EACH_PLAYER(p)	if(row[p]>=0)//如果接触地面
+		EACH_PLAYER(p)	if(row[p]>=0)	// touch ground
 			PlayTetrisSound(p, SOUND_BOTTOM);
 
-		EACH_PLAYER(p)	if(row[p]>0)//爆炸开始
+		EACH_PLAYER(p)	if(row[p]>0)	// start animation of explosion
 		{
 			if(row[p]>1)
 				m_nAddFloorBuffer[1-p]+=row[p];
@@ -767,36 +767,38 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 				PlayTetrisSound(p, SOUND_DELLINE);
 			}
 		}
+	}
 
-		EACH_PLAYER(p)
-			if(m_Explode[p]>=DELLINE_TIME||row[p]==0)	//爆炸完毕或者落地
+	EACH_PLAYER(p)
+		if(m_Explode[p]>=DELLINE_TIME||row[p]==0)	// after deletion
+		{
+			if(TetrisEngine[p].GetFloorsBuffer()>0)	// if any rows to add
 			{
-				if(TetrisEngine[p].GetFloorsBuffer()>0)	//如果有需要加的行
+				if(m_othereffect)
 				{
-					if(m_othereffect)
-					{
-						m_nAddingFloor[p]=TetrisEngine[p].GetFloorsBuffer();
-						if(m_nAddingFloor[p]>VERTICAL_BLOCKS_NUMBER)
-							m_nAddingFloor[p]=VERTICAL_BLOCKS_NUMBER;
+					m_nAddingFloor[p]=TetrisEngine[p].GetFloorsBuffer();
+					if(m_nAddingFloor[p]>VERTICAL_BLOCKS_NUMBER)
+						m_nAddingFloor[p]=VERTICAL_BLOCKS_NUMBER;
 
-						m_AddFloor[p]=EFFECT_START;
-						PlayTetrisSound(p, SOUND_ADDLINE);
-					}
+					m_AddFloor[p]=EFFECT_START;
+					PlayTetrisSound(p, SOUND_ADDLINE);
 				}
-				TetrisEngine[p].CreateNewShape();
+			}
+			TetrisEngine[p].CreateNewShape();
+		}
+
+	EACH_PLAYER(p)
+		if(m_Explode[p]>=DELLINE_TIME)	// add lines after explosion
+			if(m_nAddFloorBuffer[1-p]>0)
+			{
+				TetrisEngine[1-p].AddFloorsBuffer(m_nAddFloorBuffer[1-p]);
+				m_nAddFloorBuffer[1-p]=0;
 			}
 
-		EACH_PLAYER(p)
-			if(m_Explode[p]>=DELLINE_TIME)//爆炸完毕给对方加行
-				if(m_nAddFloorBuffer[1-p]>0)
-				{
-					TetrisEngine[1-p].AddFloorsBuffer(m_nAddFloorBuffer[1-p]);
-					m_nAddFloorBuffer[1-p]=0;
-				}
+	EACH_PLAYER(p)	if(m_Explode[p]==CHANGEWHITE_FRAME+1)	// sound of explosion
+		PlayTetrisSound(p, SOUND_DELLINE);
 
-		EACH_PLAYER(p)	if(m_Explode[p]==CHANGEWHITE_FRAME+1)//爆炸音效
-			PlayTetrisSound(p, SOUND_DELLINE);
-
+	if (m_bIsPlaying)
 		EACH_PLAYER(p)	if(m_Explode[p]==EFFECT_NOT_START&&m_AddFloor[p]==EFFECT_NOT_START)
 			TestGameOver(p);
 
@@ -804,27 +806,26 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 		{
 			if(m_Explode[p]>=DELLINE_TIME)
 				m_Explode[p]=EFFECT_NOT_START;
-			if(m_AddFloor[p]>=ADDFLOOR_FRAME*m_nAddingFloor[p])//增加行完毕
+			if(m_AddFloor[p]>=ADDFLOOR_FRAME*m_nAddingFloor[p])	// finish adding new lines
 			{
 				m_AddFloor[p]=EFFECT_NOT_START;
 				m_nAddingFloor[p]=0;
 			}
 		}
-	}
+
 
 	/*****ANIME TIMER*******/
 	AnimeFrame=(AnimeFrame+1)%10000;
 	Render();
 
-	if(m_bIsPlaying)
-		EACH_PLAYER(p)
-		{
-			if(m_Explode[p]!=EFFECT_NOT_START)//爆炸动画
-				m_Explode[p]++;
+	EACH_PLAYER(p)
+	{
+		if(m_Explode[p]!=EFFECT_NOT_START)	// explosion animation frames
+			m_Explode[p]++;
 
-			if(m_AddFloor[p]!=EFFECT_NOT_START)//增加行动画
-				m_AddFloor[p]++;
-		}
+		if(m_AddFloor[p]!=EFFECT_NOT_START)	// animation frames of adding line
+			m_AddFloor[p]++;
+	}
 
 }}
 
@@ -836,7 +837,7 @@ void CTetris_Game::AddSubtitle(int player, int sub, int subtime)
 	for(i=0;i<MAX_SUBTITLE;i++)
 		if(Subtitle[i].subcount==0)
 			break;
-	if(i<MAX_SUBTITLE)//可以显示
+	if(i<MAX_SUBTITLE)
 	{
 		Subtitle[i].player=player;
 		Subtitle[i].subtitle=sub;

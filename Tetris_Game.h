@@ -69,11 +69,11 @@ public:
 	void NewGame();	//new game
 	void StopGame(BOOL ChangeSound = TRUE);	//stop game if playing
 	void Destroy();	//game resource release
-	HRESULT Create(CWnd *pwnd);	//引擎启动
+	HRESULT Create(CWnd *pwnd);
 	void SetParam(BOOL smoothdown, BOOL smoothrotate, BOOL leftwindow, int ailevel,
 		int level, int difficulty, BOOL shownext, BOOL othereffect, int volumn);
 	void Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD curTime);//游戏中的动画或者闪烁等（比如平滑下降以及块的闪烁）
-	void UpdateRect();//让directdraw重新绑定到指定的窗口位置
+	void UpdateRect();
 
 	BOOL IsMusicOn()			{	return m_bPlayMusic;}
 	void SetMusicOn(BOOL bOn);
@@ -110,41 +110,41 @@ private:
 
 	int m_GameOver_Counter[MAX_PLAYER];
 
-	BOOL m_bIsPlaying;	//若为假表示游戏不在进行中，不响应键盘，但可能显示动画等
-	BOOL m_bIsPaused;	//若为真表示程序处于暂停状态，游戏暂停并且不响应键盘
-	BOOL m_bWindowRendering[MAX_PLAYER];	//左、右两个窗口是否需要绘制（游戏可能正在进行，也可能在其他状态）
-	int  m_Explode[MAX_PLAYER];//>0表示正进行消行动画
-	int  m_AddFloor[MAX_PLAYER];//>0表示正进行加行动画
-	int  m_nAddFloorBuffer[MAX_PLAYER];	//给对方增加的行数量
-	int  m_nAddingFloor[MAX_PLAYER];	//正在增加的行的数量
+	BOOL m_bIsPlaying;	// keyboard not allowed if game is not playing
+	BOOL m_bIsPaused;	// keyboard and animation not allowed if game paused
+	BOOL m_bWindowRendering[MAX_PLAYER];	// don't render if status is nonplayer or ?
+	int  m_Explode[MAX_PLAYER];		// >0 if animation started
+	int  m_AddFloor[MAX_PLAYER];	// >0 if animation started
+	int  m_nAddFloorBuffer[MAX_PLAYER];	// number of adding rows to the opponent
+	int  m_nAddingFloor[MAX_PLAYER];	// number of adding rows
 	int m_Mode;					// 1: 1player, 2: 2player, 3: vs AI, 4: AI only, 5: AI vs AI
-	int m_curLevel;		//当前级别（下落速度）
-	int m_Level;		//处世级别
-	int m_AILevel;		//AI级别（速度）
-	int m_difficulty;	//行数难度级别
-	int m_DisplayScore[MAX_PLAYER];	//当前显示的分数
-	int m_volumn;		//音量
+	int m_curLevel;		// current level (falling speed)
+	int m_Level;		// initial level
+	int m_AILevel;		// AI level (speed)
+	int m_difficulty;	// initial rows
+	int m_DisplayScore[MAX_PLAYER];
+	int m_volumn;
 	BOOL m_othereffect;
 	BOOL m_smoothdown;	
 	BOOL m_smoothrotate;
 	BOOL m_shownext;
 	BOOL m_leftwindow;
 
-	BOOL m_bPlaySound;	//是否播放音效
-	BOOL m_bPlayMusic;	//是否播放音乐
+	BOOL m_bPlaySound;
+	BOOL m_bPlayMusic;
 
 	struct
 	{
-		int subcount;	//0则该sub不存在
-		byte subtitle;	//出现的subtitle类型
-		int player;		//对应那个player（窗口）
-		int subtime;	//停留时间
+		int subcount;	// 0 if not exist
+		byte subtitle;	// type
+		int player;	
+		int subtime;	// time to elapse
 	}	Subtitle[MAX_SUBTITLE];
 
 	DWORD LastTime_Down[MAX_PLAYER];
-	DWORD TimerInterval[MAX_LEVEL+1];//ms为单位
+	DWORD TimerInterval[MAX_LEVEL+1];	// ms
 	
-	int AnimeFrame;//普通闪烁动画桢的控制
+	int AnimeFrame;	// common animation frame control
 
 	//directx resource
 	LPDIRECT3DTEXTURE9 m_Texture_Block;
