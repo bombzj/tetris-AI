@@ -105,7 +105,7 @@ void CTetrisView::OnInitialUpdate()
 	SetScrollSizes(MM_TEXT, CSize(0,0));
 
 	srand(time(NULL));
-
+	InitDirectInput(AfxGetApp()->GetMainWnd()->m_hWnd);
 	tetris_game.Create(AfxGetApp()->GetMainWnd());
 	SetTimer(ID_GAME_TIMER, 1, NULL);
 }
@@ -197,7 +197,7 @@ void CTetrisView::OnGameNew()
 	if(tetris_game.IsPlaying())
 		tetris_game.StopGame(FALSE);
 
-	InitDirectInput(AfxGetMainWnd()->m_hWnd);
+	AccquireInput(); //InitDirectInput(AfxGetMainWnd()->m_hWnd);
 	tetris_game.NewGame();
 	LastTime_Game=timeGetTime();
 	ResetInputBuffer();
@@ -210,11 +210,11 @@ void CTetrisView::OnGamePause()
 		tetris_game.TogglePause();
 		if(tetris_game.IsPaused())
 		{
-			FreeDirectInput();
+			UnaccquireInput();
 			ResetInputBuffer();
 		}
 		else
-			InitDirectInput(AfxGetMainWnd()->m_hWnd);
+			AccquireInput(); //InitDirectInput(AfxGetMainWnd()->m_hWnd);
 	}
 }
 
@@ -256,7 +256,7 @@ void CTetrisView::OnUpdateGameOption(CCmdUI* pCmdUI)
 void CTetrisView::OnGameStop() 
 {
 	tetris_game.StopGame();
-	FreeDirectInput();
+	UnaccquireInput();
 }
 
 void CTetrisView::OnUpdateGameStop(CCmdUI* pCmdUI) 
@@ -362,7 +362,7 @@ void CTetrisView::OnTimer(UINT nIDEvent)
 		if(tetris_game.IsPlaying())
 		{
 			/******¶ÁÈ¡directinputµÄ»º³åÇø******/
-			DWORD dwElements;
+			DWORD dwElements = 0;
 			DIDEVICEOBJECTDATA didod[ DINPUT_BUFFER_SIZE ];
 			ReadBufferedData(didod, dwElements);
 			if(dwElements<DINPUT_BUFFER_SIZE)

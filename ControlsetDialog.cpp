@@ -223,7 +223,7 @@ BOOL CControlsetDialog::OnInitDialog()
 	GetDlgItem(IDC_EDIT_DOWN1)->SetWindowText(	KeyDefString[Keydef[0][KeyDef_Down]]);
 	GetDlgItem(IDC_EDIT_DOWN2)->SetWindowText(	KeyDefString[Keydef[1][KeyDef_Down]]);
 
-	InitDirectInput(m_hWnd);
+	AccquireInput();// InitDirectInput(m_hWnd);
 	SetTimer(1000, 50, NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -232,14 +232,14 @@ BOOL CControlsetDialog::OnInitDialog()
 void CControlsetDialog::OnCancel()
 {
 	KillTimer(1000);
-	FreeDirectInput();
+	UnaccquireInput();//FreeDirectInput();
 	CDialog::OnCancel();
 }
 
 void CControlsetDialog::OnOK() 
 {
 	KillTimer(1000);
-	FreeDirectInput();
+	UnaccquireInput();//FreeDirectInput();
 	UpdateData();	
 	CDialog::OnOK();
 }
