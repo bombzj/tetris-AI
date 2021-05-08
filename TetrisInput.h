@@ -22,3 +22,5 @@ enum _KeyDef
 HRESULT InitDirectInput( HWND hwnd );	//≥ı ºªØ direct input
 HRESULT ReadBufferedData(DIDEVICEOBJECTDATA *didod, DWORD& dwElements);	//read direct input buffer data
 VOID    FreeDirectInput();	// Õ∑≈ direct input
+VOID UnaccquireInput();
+VOID AccquireInput();

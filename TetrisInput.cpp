@@ -5,6 +5,17 @@
 LPDIRECTINPUT8       g_pDI       = NULL;         
 LPDIRECTINPUTDEVICE8 g_pKeyboard = NULL;   
  
+
+VOID AccquireInput() {
+    if (g_pKeyboard)
+        g_pKeyboard->Acquire();
+}
+
+VOID UnaccquireInput() {
+    if (g_pKeyboard)
+        g_pKeyboard->Unacquire();
+}
+
 VOID FreeDirectInput()
 {
     if( g_pKeyboard ) 
@@ -22,11 +33,6 @@ HRESULT InitDirectInput( HWND hwnd )
     BOOL    bImmediate;
 
     DWORD   dwCoopFlags;
-#ifdef _WIN64
-    HINSTANCE hInst = (HINSTANCE) GetWindowLongPtr( hwnd, GWLP_HINSTANCE );
-#else
-    HINSTANCE hInst = (HINSTANCE) GetWindowLong( hwnd, GWL_HINSTANCE );
-#endif
 
     FreeDirectInput();
 
@@ -43,7 +49,6 @@ HRESULT InitDirectInput( HWND hwnd )
         dwCoopFlags |= DISCL_FOREGROUND;
     else
         dwCoopFlags |= DISCL_BACKGROUND;
-
     if( FAILED( hr = DirectInput8Create( GetModuleHandle(NULL), DIRECTINPUT_VERSION, 
                                          IID_IDirectInput8, (VOID**)&g_pDI, NULL ) ) )
         return hr;

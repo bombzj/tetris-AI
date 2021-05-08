@@ -209,5 +209,6 @@ HRESULT CTetris_Game::Render()
 void CTetris_Game::Destroy()
 {
 	DXUTShutdown();
+	FreeDirectInput();
 	//Cleanup3DEnvironment();
 }
