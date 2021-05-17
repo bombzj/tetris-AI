@@ -193,6 +193,7 @@ public:
 						// The return value specifies if the game is over
 						// if it is FALSE, it means the current shape collides with others
 						// when it just come out
+	void	FinishLineDeletion();
 
 // Operations in some special mode 
 	BOOL	OnStartSmoothRotate();

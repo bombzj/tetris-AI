@@ -142,8 +142,8 @@ HRESULT CTetris_Game::Render()
 	
     //if( FAILED( m_pd3dDevice->TestCooperativeLevel() ) )
     //    ForceWindowed();
-	float width = DXUTGetWindowWidth();
-	float height = DXUTGetWindowHeight();
+	float width = (float)DXUTGetWindowWidth();
+	float height = (float)DXUTGetWindowHeight();
 
 	float ratio = (float)BG_HEIGHT / BG_WIDTH;
 	float ratio2 = height / width;
@@ -166,13 +166,11 @@ HRESULT CTetris_Game::Render()
 	{
 		if(m_bWindowRendering[0]||m_bWindowRendering[1])
 		{
+			Display();
 			if(m_bIsPaused)
 			{
-				Display();
 				Blt3D((BG_WIDTH-GAMEPAUSED_WIDTH)/2, (BG_HEIGHT-GAMEPAUSED_HEIGHT)/2, m_Texture_GamePaused, GAMEPAUSED_WIDTH, GAMEPAUSED_HEIGHT);
 			}
-			else
-				Display();
 		}
 		else
 			Blt3D(0, 0, m_Texture_Background, BG_WIDTH, BG_HEIGHT);

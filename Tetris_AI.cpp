@@ -231,8 +231,8 @@ float CTetris_AI::CalcValue(const CBlockData& blockdata)
 	int para7=CalcSurfaceLevel();
 	int para8=CalcNewHole(blockdata);
 	if(m_Alg == 1)
-		return para0 * 1 + 5 * para1 + 9 * para2 + 3.6f * para3 + 3 * para4/* + para5*/ + para6 / 10 + (float)para7 / 50 + para8;
-	return para0 * 10 + 5 * para1 + 9 * para2 + 3.6f * para3 + 3 * para4/* + para5*/ + para6 / 10 + (float)para7 / 50 + para8;
+		return para0 * 1 + 5 * para1 + 5 * para2 + 3.6f * para3 + 3 * para4/* + para5*/ + para6 / 10 + (float)para7 / 50 + para8;
+	return para0 * 10 + 5 * para1 + 5 * para2 + 3.6f * para3 + 3 * para4/* + para5*/ + para6 / 10 + (float)para7 / 50 + para8;
 }
 
 bool CTetris_AI::AddShape(CBlockData &blockdata, CShape *shape, int MoveX, int Rotate)

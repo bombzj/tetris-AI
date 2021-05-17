@@ -153,7 +153,8 @@ void CTetrisControl::Start(int nSeed)
 		m_nCramedFloors[i] = -1;
 
 	CreateShape(FALSE);
-	while (m_nCurShapeType > 2 && m_nCurShapeType != 5) {
+	int max = 10;	// try 10 times to get a decent shape
+	while (m_nCurShapeType > 2 && m_nCurShapeType != 5 && max-- > 0) {
 		CreateShape(FALSE);
 	}
 	CreateShape();
@@ -164,7 +165,7 @@ void CTetrisControl::CreateShape(BOOL bIsNext)
 	m_RotateClockwise = FALSE;
 	m_fSmoothRotate	= 0;
 	m_nShapeSeed = Rand(m_nShapeSeed);
-	int nShapeType = m_nShapeSeed * (SHAPES_NUMBER-1) / OWN_RAND_MAX;
+	int nShapeType = m_nShapeSeed* (SHAPES_NUMBER - 1) / OWN_RAND_MAX;
 	int	nDirection = DIRECTION_UP;
 	if(bIsNext)
 	{
@@ -314,14 +315,18 @@ int CTetrisControl::OnDown()
 	}
 }
 
-BOOL CTetrisControl::CreateNewShape()
+void CTetrisControl::FinishLineDeletion()
 {
 	// finished the last time operation
-	if(m_nCurDelFloors > 0)
+	if (m_nCurDelFloors > 0)
 		DeleteFloors();
-	if(m_nFloorsBuffer > 0)
+	if (m_nFloorsBuffer > 0)
 		AddFloors();
+}
 
+BOOL CTetrisControl::CreateNewShape()
+{
+	FinishLineDeletion();
 	m_CurShape = m_NextShape;
 	m_nCurShapeType = m_nNextShapeType;
 	m_nCurShapeDir = m_nNextShapeDir;

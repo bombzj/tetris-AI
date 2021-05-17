@@ -22,6 +22,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
 	ON_WM_CLOSE()
 	//}}AFX_MSG_MAP
+//	ON_WM_SIZE()
+	ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -85,4 +87,15 @@ void CMainFrame::OnClose()
 void CMainFrame::OnUpdateFrameTitle(BOOL bAddToTitle)
 {
 	SetWindowText(L"Tetris-AI");
+}
+
+void CMainFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+	CRect clientRect, windowRect;
+	this->GetClientRect(&clientRect);
+	this->GetWindowRect(&windowRect);
+
+	lpMMI->ptMinTrackSize.x = windowRect.Width() - clientRect.Width() + 760 / 2;
+	lpMMI->ptMinTrackSize.y = windowRect.Height() - clientRect.Height() + 550 / 2;
+	CFrameWnd::OnGetMinMaxInfo(lpMMI);
 }

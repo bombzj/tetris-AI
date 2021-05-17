@@ -52,6 +52,8 @@ BEGIN_MESSAGE_MAP(CTetrisView, CFormView)
 	ON_COMMAND(ID_MODE_AIONLY, &CTetrisView::OnModeAionly)
 	ON_UPDATE_COMMAND_UI(ID_MODE_AIONLY, &CTetrisView::OnUpdateModeAionly)
 	ON_UPDATE_COMMAND_UI(ID_MODE_AIVSAI, &CTetrisView::OnUpdateModeAivsai)
+//	ON_WM_GETMINMAXINFO()
+//ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -399,4 +401,3 @@ void CTetrisView::OnForcewindowmode()
 {
 	tetris_game.ForceWindowMode();
 }
-

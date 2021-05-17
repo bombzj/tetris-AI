@@ -96,6 +96,8 @@ public:
 	afx_msg void OnModeAionly();
 	afx_msg void OnUpdateModeAionly(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModeAivsai(CCmdUI* pCmdUI);
+//	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+//	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 };
 
 #ifndef _DEBUG  // debug version in TetrisView.cpp

@@ -364,6 +364,7 @@ HRESULT CTetris_Game::Display()
 							m_Texture_Block, BlockRect[TetrisEngine[p].GetBlock(i, j).m_nColor]+AnimeFrame/BLOCK_CPF%BLOCK_FRAME);
 					}
 				/*********** Draw falling shapes **********/
+				if(m_bIsPlaying)
 				for(i=0;i<tmp.m_bBlocks;i++)//
 				{
 					float top, left;	// center coord
@@ -581,6 +582,10 @@ void CTetris_Game::NewGame()
 	AnimeFrame=0;
 	m_bIsPaused=FALSE;
 	m_bIsPlaying=TRUE;
+	// clear input buffer
+	DWORD dwElements = 0;
+	DIDEVICEOBJECTDATA didod[DINPUT_BUFFER_SIZE];
+	ReadBufferedData(didod, dwElements);
 }
 
 void CTetris_Game::StopGame(BOOL ChangeSound)
@@ -784,7 +789,9 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 					PlayTetrisSound(p, SOUND_ADDLINE);
 				}
 			}
-			TetrisEngine[p].CreateNewShape();
+			TetrisEngine[p].FinishLineDeletion();
+			if (m_bIsPlaying)
+				TetrisEngine[p].CreateNewShape();
 		}
 
 	EACH_PLAYER(p)
