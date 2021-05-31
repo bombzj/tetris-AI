@@ -481,6 +481,8 @@ int CTetris_Game::PlayerInputNotify(int player, int nkeydef, int defaultrow)
 	if(TetrisEngine[player].IsGameOver()||m_Explode[player]!=EFFECT_NOT_START||m_AddFloor[player]!=EFFECT_NOT_START)
 		return row;
 
+	if(!m_bReplay && nkeydef != KeyDef_SmoothDown && nkeydef != KeyDef_SmoothRotate)
+		m_record.AddAction(nkeydef);
 	switch(nkeydef)
 	{
 	case KeyDef_Left:
@@ -525,7 +527,7 @@ int CTetris_Game::PlayerInputNotify(int player, int nkeydef, int defaultrow)
 	return row;
 }
 
-void CTetris_Game::NewGame()
+void CTetris_Game::NewGame(BOOL replay)
 {
 	StopAllSubtitle();
 	LastTime_Down[0]=LastTime_Down[1]=timeGetTime();
@@ -536,6 +538,13 @@ void CTetris_Game::NewGame()
 	m_nAddFloorBuffer[0]=m_nAddFloorBuffer[1]=0;
 	m_nAddingFloor[0]=m_nAddingFloor[1]=0;
 	int seed=rand(), i, p;
+	m_bReplay = replay;
+	if (m_bReplay) {
+		m_record.initRead();
+		seed = m_record.seed;
+	}
+	else
+		m_record.init(seed);
 	for(i=0;i<MAX_PLAYER;i++)
 		m_bWindowRendering[i] = TRUE;
 	switch(m_Mode)
@@ -648,26 +657,33 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 	{
 		EACH_PLAYER(p)	if(m_Explode[p]==EFFECT_NOT_START&&m_AddFloor[p]==EFFECT_NOT_START)
 		{
-			switch(TetrisEngine[p].ComputerPlay())//AI control/action execute
-			{
-			case ComputerMove_None:
-				break;
-			case ComputerMove_Left:
-				row[p] = PlayerInputNotify(p, KeyDef_Left, row[p]);
-				break;
-			case ComputerMove_Right:
-				row[p] = PlayerInputNotify(p, KeyDef_Right, row[p]);
-				break;
-			case ComputerMove_Rotate:
-				row[p] = PlayerInputNotify(p, KeyDef_Rotate, row[p]);
-				break;
-			case ComputerMove_Bottom:
-				row[p] = PlayerInputNotify(p, KeyDef_Bottom, row[p]);
-				break;
-			case ComputerMove_Down:
-				row[p] = PlayerInputNotify(p, KeyDef_Down, row[p]);
-				break;
-			default:;
+			if (m_bReplay) {
+				int act = m_record.read();
+				if(act != -1)
+					row[p] = PlayerInputNotify(p, act, row[p]);
+			}
+			else {
+				switch (TetrisEngine[p].ComputerPlay())//AI control/action execute
+				{
+				case ComputerMove_None:
+					break;
+				case ComputerMove_Left:
+					row[p] = PlayerInputNotify(p, KeyDef_Left, row[p]);
+					break;
+				case ComputerMove_Right:
+					row[p] = PlayerInputNotify(p, KeyDef_Right, row[p]);
+					break;
+				case ComputerMove_Rotate:
+					row[p] = PlayerInputNotify(p, KeyDef_Rotate, row[p]);
+					break;
+				case ComputerMove_Bottom:
+					row[p] = PlayerInputNotify(p, KeyDef_Bottom, row[p]);
+					break;
+				case ComputerMove_Down:
+					row[p] = PlayerInputNotify(p, KeyDef_Down, row[p]);
+					break;
+				default:;
+				}
 			}
 			if(row[p]==-1)
 				for(DWORD j = 0; j < MAX_KEYDEF; j++ ) 
@@ -823,6 +839,7 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 
 	/*****ANIME TIMER*******/
 	AnimeFrame=(AnimeFrame+1)%10000;
+	m_record.m_curTick++;
 	Render();
 
 	EACH_PLAYER(p)

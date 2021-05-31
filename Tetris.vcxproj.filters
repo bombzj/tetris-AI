@@ -93,6 +93,9 @@
     <ClCompile Include="TetrisDoc.cpp">
       <Filter>Few Edited</Filter>
     </ClCompile>
+    <ClCompile Include="TetrisRecord.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tetris.rc">
@@ -174,6 +177,9 @@
     </ClInclude>
     <ClInclude Include="TetrisDoc.h">
       <Filter>Few Edited</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrisRecord.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,7 @@
 #include "Tetrisdraw.h"
 #include "Tetrismusic.h"
 #include "TetrisInput.h"
+#include "TetrisRecord.h"
 
 #define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZ|D3DFVF_TEX1)
 struct CUSTOMVERTEX
@@ -66,7 +67,7 @@ public:
 	BOOL IsPaused()				{	return m_bIsPaused;}
 	void TogglePause()			{	m_bIsPaused=!m_bIsPaused;	if(m_bIsPaused)	PauseGame();}
 	BOOL IsPlaying()			{	return m_bIsPlaying;}
-	void NewGame();	//new game
+	void NewGame(BOOL replay = FALSE);	//new game
 	void StopGame(BOOL ChangeSound = TRUE);	//stop game if playing
 	void Destroy();	//game resource release
 	HRESULT Create(CWnd *pwnd);
@@ -85,6 +86,8 @@ public:
 	HRESULT DeleteDeviceObjects();	//release directx resource
 	HRESULT InitDeviceObjects();	//load directx resource
 	HRESULT RestoreDeviceObjects();
+	CTetrisRecord m_record;
+	BOOL m_bReplay;
 
 private:
 	void ChangeDevice();

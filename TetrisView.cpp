@@ -54,6 +54,7 @@ BEGIN_MESSAGE_MAP(CTetrisView, CFormView)
 	ON_UPDATE_COMMAND_UI(ID_MODE_AIVSAI, &CTetrisView::OnUpdateModeAivsai)
 //	ON_WM_GETMINMAXINFO()
 //ON_WM_GETMINMAXINFO()
+ON_COMMAND(ID_GAME_REPLAY, &CTetrisView::OnGameReplay)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -400,4 +401,14 @@ void CTetrisView::OnGameFullscreen()
 void CTetrisView::OnForcewindowmode()
 {
 	tetris_game.ForceWindowMode();
+}
+
+
+void CTetrisView::OnGameReplay()
+{
+	if (tetris_game.IsPlaying())
+		tetris_game.StopGame(FALSE);
+
+	tetris_game.NewGame(TRUE);
+	LastTime_Game = timeGetTime();
 }

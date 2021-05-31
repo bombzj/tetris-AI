@@ -266,6 +266,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ControlsetDialog.cpp" />
+    <ClCompile Include="TetrisRecord.cpp" />
     <ClCompile Include="d3dutil.cpp" />
     <ClCompile Include="dmutil.cpp" />
     <ClCompile Include="DXUT.cpp" />
@@ -301,6 +302,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ControlsetDialog.h" />
+    <ClInclude Include="TetrisRecord.h" />
     <ClInclude Include="d3dres.h" />
     <ClInclude Include="d3dutil.h" />
     <ClInclude Include="dmusici.h" />

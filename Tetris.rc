@@ -89,6 +89,7 @@ BEGIN
         MENUITEM "&New\tF2",                    ID_GAME_NEW
         MENUITEM "&Pause\tF3",                  ID_GAME_PAUSE
         MENUITEM "&Stop\tF4",                   ID_GAME_STOP
+        MENUITEM "&Replay\tCtrl+R",             ID_GAME_REPLAY
         MENUITEM SEPARATOR
         MENUITEM "&1 Player\tCtrl+1",           ID_PLAYER1
         MENUITEM "&2 Player\tCtrl+2",           ID_PLAYER2
@@ -130,11 +131,12 @@ BEGIN
     VK_F3,          ID_GAME_PAUSE,          VIRTKEY, NOINVERT
     "M",            ID_GAME_PLAYMUSIC,      VIRTKEY, CONTROL, NOINVERT
     "S",            ID_GAME_PLAYSOUND,      VIRTKEY, CONTROL, NOINVERT
+    "R",            ID_GAME_REPLAY,         VIRTKEY, CONTROL, NOINVERT
     VK_F4,          ID_GAME_STOP,           VIRTKEY, NOINVERT
-    "1",            ID_PLAYER1,             VIRTKEY, CONTROL, NOINVERT
-    "2",            ID_PLAYER2,             VIRTKEY, CONTROL, NOINVERT
     "4",            ID_MODE_AIONLY,         VIRTKEY, CONTROL, NOINVERT
     "5",            ID_MODE_AIVSAI,         VIRTKEY, CONTROL, NOINVERT
+    "1",            ID_PLAYER1,             VIRTKEY, CONTROL, NOINVERT
+    "2",            ID_PLAYER2,             VIRTKEY, CONTROL, NOINVERT
 END
 
 
