@@ -15,13 +15,15 @@ class CTetrisRecord
 public:
 	int m_curTick;
 	std::list<TetrisAction> m_actionList;
+	std::list<TetrisAction> m_actionList2;
 	int seed;
 	std::list<TetrisAction>::iterator iter;
+	std::list<TetrisAction>::iterator iter2;
 
 
-	void AddAction(int action);
+	void AddAction(int player, int action);
 	void init(int seed);
 	void initRead();
-	int read();
+	int read(int player);
 };
 

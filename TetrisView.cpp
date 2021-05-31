@@ -362,7 +362,7 @@ void CTetrisView::OnTimer(UINT nIDEvent)
 			return;
 		LastTime_Game+=interval/ANIME_TIME*ANIME_TIME;
 
-		if(tetris_game.IsPlaying())
+		if(tetris_game.IsPlaying() && !tetris_game.m_bReplay)
 		{
 			/******¶ÁÈ¡directinputµÄ»º³åÇø******/
 			DWORD dwElements = 0;

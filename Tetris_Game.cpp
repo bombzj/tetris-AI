@@ -482,7 +482,7 @@ int CTetris_Game::PlayerInputNotify(int player, int nkeydef, int defaultrow)
 		return row;
 
 	if(!m_bReplay && nkeydef != KeyDef_SmoothDown && nkeydef != KeyDef_SmoothRotate)
-		m_record.AddAction(nkeydef);
+		m_record.AddAction(player, nkeydef);
 	switch(nkeydef)
 	{
 	case KeyDef_Left:
@@ -512,7 +512,7 @@ int CTetris_Game::PlayerInputNotify(int player, int nkeydef, int defaultrow)
 		break;
 	case KeyDef_Down:
 		if(m_smoothdown)
-			row=TetrisEngine[player].OnSmoothDown((float)ANIME_TIME/ACCE_DOWNSPEED);
+			row=TetrisEngine[player].OnSmoothDown((float)ANIME_TIME/ACCE_DOWNSPEED - (float)ANIME_TIME / TimerInterval[m_curLevel]);
 		else
 			row=TetrisEngine[player].OnDown();
 		break;
@@ -652,15 +652,17 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 
 	DWORD interval;
 	int p;
-	int row[MAX_PLAYER]={-1, -1};	// default status
+	int row[MAX_PLAYER]={-1, -1};	// if the current block just touched bottom
 	if(m_bIsPlaying)
 	{
 		EACH_PLAYER(p)	if(m_Explode[p]==EFFECT_NOT_START&&m_AddFloor[p]==EFFECT_NOT_START)
 		{
 			if (m_bReplay) {
-				int act = m_record.read();
-				if(act != -1)
+				int act = m_record.read(p);
+				while (act != -1) {
 					row[p] = PlayerInputNotify(p, act, row[p]);
+					act = m_record.read(p);
+				}
 			}
 			else {
 				switch (TetrisEngine[p].ComputerPlay())//AI control/action execute
@@ -685,14 +687,16 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 				default:;
 				}
 			}
+			// user press key or hold left/right key
 			if(row[p]==-1)
 				for(DWORD j = 0; j < MAX_KEYDEF; j++ ) 
 				{
 					if(keystatus[p][j].bKeyPress)
 					{
-						row[p]=PlayerInputNotify(p, j, row[p]);
 						if(j==KeyDef_Down)
 							PlayTetrisSound(p, SOUND_SPEEDUP);
+						else
+							row[p] = PlayerInputNotify(p, j, row[p]);
 					}
 					/***** KEYDOWN REPEAT *******/
 					if(keystatus[p][j].bKeydown&&j<2)
@@ -705,24 +709,27 @@ void CTetris_Game::Animate(KeyStatus keystatus[MAX_PLAYER][MAX_KEYDEF], DWORD cu
 						}
 					}
 				}
-			/*****ID_GAME_TIMER*******/
+			
 			if(row[p]==-1)
 			{
+				// auto finish rotate
 				if(m_smoothrotate)
 					PlayerInputNotify(p, KeyDef_SmoothRotate);	// AI rotation
 
 				interval=curTime-LastTime_Down[p];
 				if(m_smoothdown)
 				{
+					// auto finish smooth down (whether user hold down key or not)
 					if(keystatus[p][KeyDef_Down].bKeydown)
 					{
 						row[p]=PlayerInputNotify(p, KeyDef_Down, row[p]);	// AI down move
 					}
-					else
+					if(row[p] == -1)
 						row[p]=PlayerInputNotify(p, KeyDef_SmoothDown, row[p]);	// AI down move
 				}
 				else
 				{
+					// user hold down key to repeat
 					if(keystatus[p][KeyDef_Down].bKeydown)
 					{
 						if(interval>ACCE_DOWNSPEED)
