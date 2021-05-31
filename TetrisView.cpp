@@ -409,6 +409,12 @@ void CTetrisView::OnGameReplay()
 	if (tetris_game.IsPlaying())
 		tetris_game.StopGame(FALSE);
 
+
+	for (int p = 0; p < 2; p++)
+		for (int i = 0; i < 5; i++) {
+			keystatus[p][i].bKeydown = FALSE;
+			keystatus[p][i].bKeyPress = FALSE;
+		}
 	tetris_game.NewGame(TRUE);
 	LastTime_Game = timeGetTime();
 }
