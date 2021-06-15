@@ -157,6 +157,7 @@ void CTetrisControl::Start(int nSeed)
 	while (m_nCurShapeType > 2 && m_nCurShapeType != 5 && max-- > 0) {
 		CreateShape(FALSE);
 	}
+	m_NextShape.m_nColor = -1;		// clear data from last game. :if(nShapeType == m_NextShape.m_nColor)
 	CreateShape();
 }
 
