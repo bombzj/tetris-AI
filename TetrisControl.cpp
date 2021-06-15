@@ -169,7 +169,7 @@ void CTetrisControl::CreateShape(BOOL bIsNext)
 	int	nDirection = DIRECTION_UP;
 	if(bIsNext)
 	{
-		if(nShapeType == m_CurShape.m_nColor)
+		if(nShapeType == m_NextShape.m_nColor)
 			nShapeType = Rand(m_nShapeSeed) * (SHAPES_NUMBER - 1) / OWN_RAND_MAX;
 		m_NextShape = CreateSpecificShape(nShapeType, nDirection);
 		m_nNextShapeType = nShapeType;
