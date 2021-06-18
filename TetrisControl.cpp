@@ -157,7 +157,7 @@ void CTetrisControl::Start(int nSeed)
 	while (m_nCurShapeType > 2 && m_nCurShapeType != 5 && max-- > 0) {
 		CreateShape(FALSE);
 	}
-	m_NextShape.m_nColor = -1;		// clear data from last game. :if(nShapeType == m_NextShape.m_nColor)
+	//m_NextShape.m_nColor = -1;		// clear data from last game. :if(nShapeType == m_NextShape.m_nColor)
 	CreateShape();
 }
 
@@ -170,8 +170,10 @@ void CTetrisControl::CreateShape(BOOL bIsNext)
 	int	nDirection = DIRECTION_UP;
 	if(bIsNext)
 	{
-		if(nShapeType == m_NextShape.m_nColor)
-			nShapeType = Rand(m_nShapeSeed) * (SHAPES_NUMBER - 1) / OWN_RAND_MAX;
+		if (nShapeType == m_nCurShapeType) {
+			m_nShapeSeed = Rand(m_nShapeSeed);
+			nShapeType = m_nShapeSeed *(SHAPES_NUMBER - 1) / OWN_RAND_MAX;
+		}
 		m_NextShape = CreateSpecificShape(nShapeType, nDirection);
 		m_nNextShapeType = nShapeType;
 		m_nNextShapeDir = nDirection;
