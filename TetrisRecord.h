@@ -22,6 +22,7 @@ public:
 
 
 	void AddAction(int player, int action);
+	void AddAction(int player, int action, int tick);
 	void init(int seed);
 	void initRead();
 	int read(int player);

@@ -9,6 +9,14 @@ void CTetrisRecord::AddAction(int player, int action)
 		m_actionList2.push_back(TetrisAction(m_curTick, action));
 }
 
+void CTetrisRecord::AddAction(int player, int action, int tick)
+{
+	if (player == 0)
+		m_actionList.push_back(TetrisAction(tick, action));
+	else
+		m_actionList2.push_back(TetrisAction(tick, action));
+}
+
 void CTetrisRecord::init(int seed)
 {
 	m_actionList.clear();

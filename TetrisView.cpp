@@ -8,6 +8,7 @@
 #include "TetrisView.h"
 
 #include "Tetrisinput.h"
+#include <fstream>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,8 +18,8 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // CTetrisView
-extern	CMusicSegment*			g_pSound[MAX_SOUND];
-extern	CMusicSegment*			g_pMusic[MAX_MUSIC];
+extern	CMusicSegment* g_pSound[MAX_SOUND];
+extern	CMusicSegment* g_pMusic[MAX_MUSIC];
 
 IMPLEMENT_DYNCREATE(CTetrisView, CFormView)
 
@@ -52,9 +53,11 @@ BEGIN_MESSAGE_MAP(CTetrisView, CFormView)
 	ON_COMMAND(ID_MODE_AIONLY, &CTetrisView::OnModeAionly)
 	ON_UPDATE_COMMAND_UI(ID_MODE_AIONLY, &CTetrisView::OnUpdateModeAionly)
 	ON_UPDATE_COMMAND_UI(ID_MODE_AIVSAI, &CTetrisView::OnUpdateModeAivsai)
-//	ON_WM_GETMINMAXINFO()
-//ON_WM_GETMINMAXINFO()
-ON_COMMAND(ID_GAME_REPLAY, &CTetrisView::OnGameReplay)
+	//	ON_WM_GETMINMAXINFO()
+	//ON_WM_GETMINMAXINFO()
+	ON_COMMAND(ID_GAME_REPLAY, &CTetrisView::OnGameReplay)
+	ON_COMMAND(ID_GAME_LOAD, &CTetrisView::OnGameLoad)
+	ON_COMMAND(ID_GAME_SAVE, &CTetrisView::OnGameSave)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -66,16 +69,16 @@ CTetrisView::CTetrisView()
 	//{{AFX_DATA_INIT(CTetrisView)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
-	DefaultKeydef[0][0]=0x1e;
-	DefaultKeydef[0][1]=0x20;
-	DefaultKeydef[0][2]=0x11;
-	DefaultKeydef[0][4]=0x39;
-	DefaultKeydef[0][3]=0x1f;
-	DefaultKeydef[1][0]=0xcb;
-	DefaultKeydef[1][1]=0xcd;
-	DefaultKeydef[1][2]=0xc8;
-	DefaultKeydef[1][3]=0xcf;
-	DefaultKeydef[1][4]=0xd0;
+	DefaultKeydef[0][0] = 0x1e;
+	DefaultKeydef[0][1] = 0x20;
+	DefaultKeydef[0][2] = 0x11;
+	DefaultKeydef[0][4] = 0x39;
+	DefaultKeydef[0][3] = 0x1f;
+	DefaultKeydef[1][0] = 0xcb;
+	DefaultKeydef[1][1] = 0xcd;
+	DefaultKeydef[1][2] = 0xc8;
+	DefaultKeydef[1][3] = 0xcf;
+	DefaultKeydef[1][4] = 0xd0;
 	ReadSettings();
 }
 
@@ -104,8 +107,8 @@ void CTetrisView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 	GetParentFrame()->RecalcLayout();
-//	ResizeParentToFit();
-	SetScrollSizes(MM_TEXT, CSize(0,0));
+	//	ResizeParentToFit();
+	SetScrollSizes(MM_TEXT, CSize(0, 0));
 
 	srand(time(NULL));
 	InitDirectInput(AfxGetApp()->GetMainWnd()->m_hWnd);
@@ -116,14 +119,14 @@ void CTetrisView::OnInitialUpdate()
 
 void CTetrisView::ReadSettings()
 {
-	CWinApp* app=AfxGetApp();
+	CWinApp* app = AfxGetApp();
 	CString tmp;
-	for(int p=0; p<MAX_PLAYER; p++)
-		for(DWORD j = 0; j < MAX_KEYDEF; j++ )
+	for (int p = 0; p < MAX_PLAYER; p++)
+		for (DWORD j = 0; j < MAX_KEYDEF; j++)
 		{
 			tmp.Format(L"Keydef%d%d", p, j);
 			controlsetdlg.Keydef[p][j] = keystatus[p][j].Keydef = app->GetProfileInt(_T("Keydef"), tmp, DefaultKeydef[p][j]);
-			
+
 		}
 	tetris_game.SetSoundOn(app->GetProfileInt(_T("Config"), _T("playsound"), TRUE));
 	tetris_game.SetMusicOn(app->GetProfileInt(_T("Config"), _T("playmusic"), TRUE));
@@ -139,16 +142,16 @@ void CTetrisView::ReadSettings()
 	optiondlg.m_edit_volumn = app->GetProfileInt(_T("Config"), _T("volumn"), 100);
 
 	tetris_game.SetParam(optiondlg.m_smoothdown, optiondlg.m_smoothrotate,
-		optiondlg.m_leftwindow, optiondlg.m_ailevel, optiondlg.m_level, optiondlg.m_difficulty, 
+		optiondlg.m_leftwindow, optiondlg.m_ailevel, optiondlg.m_level, optiondlg.m_difficulty,
 		optiondlg.m_shownext, optiondlg.m_othereffect, optiondlg.m_edit_volumn);
 }
 
 void CTetrisView::WriteSettings()
 {
-	CWinApp* app=AfxGetApp();
+	CWinApp* app = AfxGetApp();
 	CString tmp;
-	for(int p=0; p<MAX_PLAYER; p++)
-		for(DWORD j = 0; j < MAX_KEYDEF; j++ )
+	for (int p = 0; p < MAX_PLAYER; p++)
+		for (DWORD j = 0; j < MAX_KEYDEF; j++)
 		{
 			tmp.Format(L"Keydef%d%d", p, j);
 			app->WriteProfileInt(_T("Keydef"), tmp, keystatus[p][j].Keydef);
@@ -197,21 +200,21 @@ CTetrisDoc* CTetrisView::GetDocument() // non-debug version is inline
 
 void CTetrisView::OnGameNew()
 {
-	if(tetris_game.IsPlaying())
+	if (tetris_game.IsPlaying())
 		tetris_game.StopGame(FALSE);
 
 	AccquireInput(); //InitDirectInput(AfxGetMainWnd()->m_hWnd);
 	tetris_game.NewGame();
-	LastTime_Game=timeGetTime();
+	LastTime_Game = timeGetTime();
 	ResetInputBuffer();
 }
 
-void CTetrisView::OnGamePause() 
+void CTetrisView::OnGamePause()
 {
-	if(tetris_game.IsPlaying())
+	if (tetris_game.IsPlaying())
 	{
 		tetris_game.TogglePause();
-		if(tetris_game.IsPaused())
+		if (tetris_game.IsPaused())
 		{
 			UnaccquireInput();
 			ResetInputBuffer();
@@ -221,67 +224,70 @@ void CTetrisView::OnGamePause()
 	}
 }
 
-void CTetrisView::OnUpdateGamePause(CCmdUI* pCmdUI) 
+void CTetrisView::OnUpdateGamePause(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(tetris_game.IsPaused());
 	pCmdUI->Enable(tetris_game.IsPlaying());
 }
 
 
-void CTetrisView::OnGameOption() 
+void CTetrisView::OnGameOption()
 {
 	this->OnForcewindowmode();
-	if(optiondlg.DoModal()!=IDOK)
+	if (optiondlg.DoModal() != IDOK)
 		return;
 	WriteSettings();
 }
-void CTetrisView::OnGameControl() 
+void CTetrisView::OnGameControl()
 {
 	this->OnForcewindowmode();
-	if(controlsetdlg.DoModal()!=IDOK)
+	if (controlsetdlg.DoModal() != IDOK)
 	{
-		for(int p=0; p<MAX_PLAYER; p++)
-			for(DWORD j = 0; j < MAX_KEYDEF; j++ )
+		for (int p = 0; p < MAX_PLAYER; p++)
+			for (DWORD j = 0; j < MAX_KEYDEF; j++)
 				controlsetdlg.Keydef[p][j] = keystatus[p][j].Keydef;
 		return;
 	}
-	for(int p=0; p<MAX_PLAYER; p++)
-		for(DWORD j = 0; j < MAX_KEYDEF; j++ )
+	for (int p = 0; p < MAX_PLAYER; p++)
+		for (DWORD j = 0; j < MAX_KEYDEF; j++)
 			keystatus[p][j].Keydef = controlsetdlg.Keydef[p][j];
 	WriteSettings();
 }
 
-void CTetrisView::OnUpdateGameOption(CCmdUI* pCmdUI) 
+void CTetrisView::OnUpdateGameOption(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(!tetris_game.IsPlaying());
 }
 
-void CTetrisView::OnGameStop() 
+void CTetrisView::OnGameStop()
 {
 	tetris_game.StopGame();
 	UnaccquireInput();
 }
 
-void CTetrisView::OnUpdateGameStop(CCmdUI* pCmdUI) 
+void CTetrisView::OnUpdateGameStop(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(tetris_game.IsPlaying());
 }
 
 void CTetrisView::ResetInputBuffer()
 {
-	for(int p=0;p<2;p++)
-		for(int i=0;i<5;i++)
-			keystatus[p][i].bKeydown=FALSE;
+	for (int p = 0; p < 2; p++)
+		for (int i = 0; i < 5; i++)
+			keystatus[p][i].bKeydown = FALSE;
 }
 
-void CTetrisView::OnPlayer1() 
-{	tetris_game.SetMode(1);	
+void CTetrisView::OnPlayer1()
+{
+	tetris_game.SetMode(1);
 }
-void CTetrisView::OnPlayer2() 
-{	tetris_game.SetMode(2);	
+void CTetrisView::OnPlayer2()
+{
+	tetris_game.SetMode(2);
 }
-void CTetrisView::OnComputer() 
-{	tetris_game.SetMode(3);	
+void CTetrisView::OnComputer()
+{
+	tetris_game.SetMode(3);
 }
 void CTetrisView::OnModeAivsai()
 {
@@ -292,19 +298,19 @@ void CTetrisView::OnModeAionly()
 	tetris_game.SetMode(4);
 }
 
-void CTetrisView::OnUpdatePlayer1(CCmdUI* pCmdUI) 
-{	
-	pCmdUI->SetCheck(tetris_game.GetMode()==1);
+void CTetrisView::OnUpdatePlayer1(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(tetris_game.GetMode() == 1);
 	pCmdUI->Enable(!tetris_game.IsPlaying());
 }
-void CTetrisView::OnUpdatePlayer2(CCmdUI* pCmdUI) 
-{	
-	pCmdUI->SetCheck(tetris_game.GetMode()==2);
+void CTetrisView::OnUpdatePlayer2(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(tetris_game.GetMode() == 2);
 	pCmdUI->Enable(!tetris_game.IsPlaying());
 }
-void CTetrisView::OnUpdateComputer(CCmdUI* pCmdUI) 
-{	
-	pCmdUI->SetCheck(tetris_game.GetMode()==3);
+void CTetrisView::OnUpdateComputer(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(tetris_game.GetMode() == 3);
 	pCmdUI->Enable(!tetris_game.IsPlaying());
 }
 
@@ -320,67 +326,69 @@ void CTetrisView::OnUpdateModeAivsai(CCmdUI* pCmdUI)
 	pCmdUI->Enable(!tetris_game.IsPlaying());
 }
 
-void CTetrisView::OnGamePlaymusic() 
-{	tetris_game.SetMusicOn(!tetris_game.IsMusicOn());
-}
-void CTetrisView::OnUpdateGamePlaymusic(CCmdUI* pCmdUI) 
+void CTetrisView::OnGamePlaymusic()
 {
-	pCmdUI->SetCheck(tetris_game.IsMusicOn()&&g_pMusic[0]!=NULL);	pCmdUI->Enable(g_pMusic[0]!=NULL);
+	tetris_game.SetMusicOn(!tetris_game.IsMusicOn());
 }
-void CTetrisView::OnGamePlaysound() 
-{	tetris_game.SetSoundOn(!tetris_game.IsSoundOn());
-}
-void CTetrisView::OnUpdateGamePlaysound(CCmdUI* pCmdUI) 
+void CTetrisView::OnUpdateGamePlaymusic(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(tetris_game.IsSoundOn()&&g_pSound[0]!=NULL);	pCmdUI->Enable(g_pSound[0]!=NULL);
+	pCmdUI->SetCheck(tetris_game.IsMusicOn() && g_pMusic[0] != NULL);	pCmdUI->Enable(g_pMusic[0] != NULL);
+}
+void CTetrisView::OnGamePlaysound()
+{
+	tetris_game.SetSoundOn(!tetris_game.IsSoundOn());
+}
+void CTetrisView::OnUpdateGamePlaysound(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(tetris_game.IsSoundOn() && g_pSound[0] != NULL);	pCmdUI->Enable(g_pSound[0] != NULL);
 }
 
-void CTetrisView::OnPaint() 
+void CTetrisView::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-	tetris_game.UpdateRect();	
+	tetris_game.UpdateRect();
 
 	// Do not call CFormView::OnPaint() for painting messages
 }
 
-void CTetrisView::OnKillFocus(CWnd* pNewWnd) 
+void CTetrisView::OnKillFocus(CWnd* pNewWnd)
 {
 	CFormView::OnKillFocus(pNewWnd);
 	tetris_game.PauseGame();
 }
 
-void CTetrisView::OnTimer(UINT nIDEvent) 
+void CTetrisView::OnTimer(UINT nIDEvent)
 {
-	if(nIDEvent==ID_GAME_TIMER)	
+	if (nIDEvent == ID_GAME_TIMER)
 	{
-		DWORD curTime=timeGetTime();
-		if(tetris_game.IsPaused())
+		DWORD curTime = timeGetTime();
+		if (tetris_game.IsPaused())
 			return;
 
-		DWORD interval=curTime-LastTime_Game;
-		if(interval<ANIME_TIME)
+		DWORD interval = curTime - LastTime_Game;
+		if (interval < ANIME_TIME)
 			return;
-		LastTime_Game+=interval/ANIME_TIME*ANIME_TIME;
+		LastTime_Game += interval / ANIME_TIME * ANIME_TIME;
 
-		if(tetris_game.IsPlaying() && !tetris_game.m_bReplay)
+		if (tetris_game.IsPlaying() && !tetris_game.m_bReplay)
 		{
 			/******¶ÁÈ¡directinputµÄ»º³åÇø******/
 			DWORD dwElements = 0;
-			DIDEVICEOBJECTDATA didod[ DINPUT_BUFFER_SIZE ];
+			DIDEVICEOBJECTDATA didod[DINPUT_BUFFER_SIZE];
 			ReadBufferedData(didod, dwElements);
-			if(dwElements<DINPUT_BUFFER_SIZE)
-				for(int p=0; p<MAX_PLAYER; p++)
-					for(DWORD j = 0; j < MAX_KEYDEF; j++ ) 
+			if (dwElements < DINPUT_BUFFER_SIZE)
+				for (int p = 0; p < MAX_PLAYER; p++)
+					for (DWORD j = 0; j < MAX_KEYDEF; j++)
 					{
-						keystatus[p][j].bKeyPress=FALSE;
-						for(DWORD i = 0; i < dwElements; i++ ) 
-							if(keystatus[p][j].Keydef==didod[i].dwOfs)
+						keystatus[p][j].bKeyPress = FALSE;
+						for (DWORD i = 0; i < dwElements; i++)
+							if (keystatus[p][j].Keydef == didod[i].dwOfs)
 							{
 								keystatus[p][j].bKeydown = (didod[i].dwData & 0x80) ? TRUE : FALSE;
-								if(keystatus[p][j].bKeydown)
+								if (keystatus[p][j].bKeydown)
 								{
 									keystatus[p][j].bKeyPress = TRUE;
-									keystatus[p][j].DownTime=curTime;
+									keystatus[p][j].DownTime = curTime;
 								}
 							}
 					}
@@ -417,4 +425,55 @@ void CTetrisView::OnGameReplay()
 		}
 	tetris_game.NewGame(TRUE);
 	LastTime_Game = timeGetTime();
+}
+
+
+void CTetrisView::OnGameLoad()
+{
+	wchar_t pBuf[256];
+	size_t len = sizeof(pBuf);
+	int bytes = GetModuleFileNameW(NULL, pBuf, len);
+	PathRemoveFileSpec(pBuf);
+	PathAppend(pBuf, L"record.txt");
+
+	CTetrisRecord& r = tetris_game.m_record;
+	std::ifstream file(pBuf, std::ifstream::in);
+	if (!file.is_open())
+		return;
+	int n, tick, action;
+	file >> n;
+	r.init(n);
+	for (int player = 0; player < 2; player++) {
+		file >> n;
+		for (int i = 0; i < n; i++) {
+			file >> action >> tick;
+			r.AddAction(player, action, tick);
+		}
+	}
+	file.close();
+
+	OnGameReplay();
+}
+
+
+void CTetrisView::OnGameSave()
+{
+	wchar_t pBuf[256];
+	size_t len = sizeof(pBuf);
+	int bytes = GetModuleFileNameW(NULL, pBuf, len);
+	PathRemoveFileSpec(pBuf);
+	PathAppend(pBuf, L"record.txt");
+
+	CTetrisRecord& r = tetris_game.m_record;
+	std::ofstream file(pBuf, std::ofstream::out);
+	file << r.seed << std::endl;
+	file << r.m_actionList.size() << std::endl;
+	for (std::list<TetrisAction>::iterator iter = r.m_actionList.begin(); iter != r.m_actionList.end(); iter++) {
+		file << iter->action << ' ' << iter->tick << std::endl;
+	}
+	file << r.m_actionList2.size() << std::endl;
+	for (std::list<TetrisAction>::iterator iter = r.m_actionList2.begin(); iter != r.m_actionList2.end(); iter++) {
+		file << iter->action << ' ' << iter->tick << std::endl;
+	}
+	file.close();
 }

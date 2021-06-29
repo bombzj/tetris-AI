@@ -99,6 +99,8 @@ public:
 //	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 //	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 	afx_msg void OnGameReplay();
+	afx_msg void OnGameLoad();
+	afx_msg void OnGameSave();
 };
 
 #ifndef _DEBUG  // debug version in TetrisView.cpp
