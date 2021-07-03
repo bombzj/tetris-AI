@@ -430,17 +430,40 @@ void CTetrisView::OnGameReplay()
 
 void CTetrisView::OnGameLoad()
 {
-	wchar_t pBuf[256];
-	size_t len = sizeof(pBuf);
-	int bytes = GetModuleFileNameW(NULL, pBuf, len);
-	PathRemoveFileSpec(pBuf);
-	PathAppend(pBuf, L"record.txt");
+	if (tetris_game.IsPlaying())
+		return;
+	//wchar_t pBuf[256];
+	//size_t len = sizeof(pBuf);
+	//int bytes = GetModuleFileNameW(NULL, pBuf, len);
+	//PathRemoveFileSpec(pBuf);
+	//PathAppend(pBuf, L"record.txt");
+
+ 
+	CFileDialog openFileDlg(TRUE, NULL, L"", OFN_HIDEREADONLY | OFN_READONLY, L"Tetris Record (*.ter)|*.ter;||", NULL);
+	INT_PTR result = openFileDlg.DoModal();
+	CString filePath;
+	if (result != IDOK) {
+		return;
+	}
 
 	CTetrisRecord& r = tetris_game.m_record;
-	std::ifstream file(pBuf, std::ifstream::in);
+	std::ifstream file(openFileDlg.GetPathName(), std::ifstream::in);
 	if (!file.is_open())
 		return;
 	int n, tick, action;
+	file >> n;
+	if (n > 5 || n <= 0)
+		return;
+	tetris_game.SetMode(n);
+	file >> n;
+	if (n > 10 || n < 0)
+		return;
+	tetris_game.SetLevel(n);
+	file >> n;
+	if (n > 15 || n < 0)
+		return;
+	tetris_game.SetDifficulty(n);
+
 	file >> n;
 	r.init(n);
 	for (int player = 0; player < 2; player++) {
@@ -458,14 +481,26 @@ void CTetrisView::OnGameLoad()
 
 void CTetrisView::OnGameSave()
 {
-	wchar_t pBuf[256];
-	size_t len = sizeof(pBuf);
-	int bytes = GetModuleFileNameW(NULL, pBuf, len);
-	PathRemoveFileSpec(pBuf);
-	PathAppend(pBuf, L"record.txt");
+	if (tetris_game.IsPlaying())
+		return;
+	//wchar_t pBuf[256];
+	//size_t len = sizeof(pBuf);
+	//int bytes = GetModuleFileNameW(NULL, pBuf, len);
+	//PathRemoveFileSpec(pBuf);
+	//PathAppend(pBuf, L"record.ter");
+
+	CFileDialog openFileDlg(FALSE, CString(".ter"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, L"Tetris Record (*.ter)|*.ter||", NULL);
+	INT_PTR result = openFileDlg.DoModal();
+	CString filePath;
+	if (result != IDOK) {
+		return;
+	}
+
 
 	CTetrisRecord& r = tetris_game.m_record;
-	std::ofstream file(pBuf, std::ofstream::out);
+	std::ofstream file(openFileDlg.GetPathName(), std::ofstream::out);
+	file << tetris_game.GetMode() << ' ' << tetris_game.GetLevel() 
+		<< ' ' << tetris_game.GetDifficulty() << std::endl;
 	file << r.seed << std::endl;
 	file << r.m_actionList.size() << std::endl;
 	for (std::list<TetrisAction>::iterator iter = r.m_actionList.begin(); iter != r.m_actionList.end(); iter++) {

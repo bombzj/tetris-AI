@@ -97,8 +97,8 @@ BEGIN
         MENUITEM "&AI Only\tCtrl+4",            ID_MODE_AIONLY
         MENUITEM "A&I VS AI\tCtrl+5",           ID_MODE_AIVSAI
         MENUITEM SEPARATOR
-        MENUITEM "&Load\tCtrl+L",               ID_GAME_LOAD
-        MENUITEM "&Save\tCtrl+S",               ID_GAME_SAVE
+        MENUITEM "&Load",                       ID_GAME_LOAD
+        MENUITEM "&Save",                       ID_GAME_SAVE
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
@@ -134,7 +134,7 @@ BEGIN
     "O",            ID_GAME_OPTION,         VIRTKEY, CONTROL, NOINVERT
     VK_F3,          ID_GAME_PAUSE,          VIRTKEY, NOINVERT
     "R",            ID_GAME_REPLAY,         VIRTKEY, CONTROL, NOINVERT
-    "S",            ID_GAME_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_GAME_SAVE,           VIRTKEY, SHIFT, CONTROL, NOINVERT
     VK_F4,          ID_GAME_STOP,           VIRTKEY, NOINVERT
     "4",            ID_MODE_AIONLY,         VIRTKEY, CONTROL, NOINVERT
     "5",            ID_MODE_AIVSAI,         VIRTKEY, CONTROL, NOINVERT

@@ -64,6 +64,10 @@ public:
 	~CTetris_Game();
 	int GetMode()		{	return m_Mode;}
 	int SetMode(int n)	{	return m_Mode=n;}
+	int GetLevel() { return m_Level; }
+	int SetLevel(int n) { return m_Level = n; }
+	int GetDifficulty() { return m_difficulty; }
+	int SetDifficulty(int n) { return m_difficulty = n; }
 	BOOL IsPaused()				{	return m_bIsPaused;}
 	void TogglePause()			{	m_bIsPaused=!m_bIsPaused;	if(m_bIsPaused)	PauseGame();}
 	BOOL IsPlaying()			{	return m_bIsPlaying;}
